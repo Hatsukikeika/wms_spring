@@ -16,33 +16,4 @@ import com.wms.service.ItemService;
 @RequestMapping(value = "/api/item")
 public class ItemController {
 
-	@Autowired
-	private ItemService itemService;
-	
-	@RequestMapping(value="/basic", method=RequestMethod.POST)
-	public ResponseBodyWrapper addItem(@RequestAttribute("$GROUPID") Long groupid, @RequestBody Item item) {
-		itemService.addItem(groupid, item);
-		return new ResponseBodyWrapper();
-	}
-	
-	@RequestMapping(value="/basic", method=RequestMethod.PUT)
-	public ResponseBodyWrapper updateItem(@RequestAttribute("$GROUPID") Long groupid,
-			@RequestParam long itemid, @RequestBody Item item) {
-		itemService.updateItem(groupid, itemid, item);
-		return new ResponseBodyWrapper();
-	}
-	
-	@RequestMapping(value="/basic", method=RequestMethod.DELETE)
-	public ResponseBodyWrapper deleteItem(@RequestAttribute("$GROUPID") Long groupid, @RequestParam long itemid) {
-		itemService.deleteItem(groupid, itemid);
-		return new ResponseBodyWrapper();
-	}
-	
-	@RequestMapping(value = "/basic/list", method = RequestMethod.GET)
-	public ResponseBodyWrapper getAllItem(@RequestAttribute("$GROUPID") Long groupid,
-			@RequestParam(defaultValue = "0") int pageNum,
-			@RequestParam(defaultValue = "10") int pageSize) {
-		
-		return new ResponseBodyWrapper().putData(itemService.itemByGroup(groupid, pageNum, pageSize));
-	}
 }
