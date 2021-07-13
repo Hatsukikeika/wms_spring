@@ -1,7 +1,12 @@
 package com.wms.bean.relations.mtm;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.wms.bean.Company;
@@ -12,10 +17,14 @@ import com.wms.bean.User;
 @Table(name="wmscompany_member")
 public class CompanyMember extends HasIdentity {
 
-	@Column(name="wmscompany")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "compmember_company", nullable = false, referencedColumnName = "data_global_id",
+		foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
 	private Company company;
 	
-	@Column(name="wmsmember")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "compmember_member", nullable = false, referencedColumnName = "data_global_id",
+		foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
 	private User member;
 
 	public Company getCompany() {
