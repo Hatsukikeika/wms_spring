@@ -24,7 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		
-		CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailService.loadUserByUsernameAndDomain(loginUser.getEmail(), loginUser.getGroupspace());
+		CustomUserDetails customUserDetails = (CustomUserDetails) customUserDetailService.loadUserByUsernameAndDomain(loginUser.getEmail(),loginUser.getCompanyName());
 		
 		if(!customUserDetails.isGroupActivated())
 			throw new CustomAuthenticationException("User group inactivated");

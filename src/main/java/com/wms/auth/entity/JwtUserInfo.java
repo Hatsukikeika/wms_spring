@@ -7,8 +7,8 @@ import com.wms.utils.security.AuthInfoExtraction;
 
 public class JwtUserInfo implements AuthInfoExtraction {
 
-	public static final String OPTKEY_GROUPID = "groupid";
-	public static final String OPTKEY_GROUPTYPE = "grouptype";
+	public static final String OPTKEY_COMPNAME = "company_name";
+	public static final String OPTKEY_COMPTYPE = "company_type";
 	public static final String OPTKEY_USRNAME = "username";
 	public static final String OPTKEY_USRUID = "uuid";
 	
@@ -26,8 +26,8 @@ public class JwtUserInfo implements AuthInfoExtraction {
 	@Override
 	public Map<String, Object> getOpts() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put(OPTKEY_GROUPID, customUserDetails.getBelongsTo().getId());
-		map.put(OPTKEY_GROUPTYPE, customUserDetails.getBelongsTo().getType().asNum());
+		map.put(OPTKEY_COMPNAME, customUserDetails.getBelongsTo().getId());
+		map.put(OPTKEY_COMPTYPE, customUserDetails.getBelongsTo().getType().asNum());
 		map.put(OPTKEY_USRNAME, customUserDetails.getUsername());
 		map.put(OPTKEY_USRUID, customUserDetails.getUser().getUuid());
 		return map;

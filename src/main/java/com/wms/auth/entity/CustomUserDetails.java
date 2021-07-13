@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.wms.bean.Group;
+import com.wms.bean.Company;
 import com.wms.bean.User;
 
 public class CustomUserDetails implements UserDetails {
@@ -15,9 +15,9 @@ public class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private Group belongsTo;
+	private Company belongsTo;
 	
-	public CustomUserDetails(User user, Group belongsTo) {
+	public CustomUserDetails(User user, Company belongsTo) {
 		this.user = user;
 		this.belongsTo = belongsTo;
 	}
@@ -30,11 +30,11 @@ public class CustomUserDetails implements UserDetails {
 		this.user = user;
 	}
 
-	public Group getBelongsTo() {
+	public Company getBelongsTo() {
 		return belongsTo;
 	}
 
-	public void setBelongsTo(Group belongsTo) {
+	public void setBelongsTo(Company belongsTo) {
 		this.belongsTo = belongsTo;
 	}
 

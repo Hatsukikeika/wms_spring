@@ -44,13 +44,13 @@ public class CustomAuthorizationFilter extends BasicAuthenticationFilter {
 			String role = JwtUtil.getRole(token);
 			String username = (String) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_USRNAME);
 			String useruuid = (String) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_USRUID);
-			Number grouptype = (Number) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_GROUPTYPE);
-			Number groupid = (Number) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_GROUPID);
+			String companyname = (String) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_COMPNAME);
+			Number companytype = (Number) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_COMPTYPE);
 			Number userid = (Number) JwtUtil.getIdentifier(token);
-			if (role != null && username != null && useruuid != null && groupid != null && userid != null && grouptype != null) {
+			if (role != null && username != null && useruuid != null && companyname != null && userid != null && companytype != null) {
 				request.setAttribute("$USERNAME", username);
-				request.setAttribute("$GROUPID", groupid.longValue());
-				request.setAttribute("$GROUPTYPE", GroupType.get(grouptype.intValue()));
+				request.setAttribute("$COMPNAME", companyname);
+				request.setAttribute("$COMPTYPE", GroupType.get(companytype.intValue()));
 				request.setAttribute("$USERUUID", useruuid);
 				request.setAttribute("$USERID", userid.longValue());
 				upat = new UsernamePasswordAuthenticationToken(null, null,

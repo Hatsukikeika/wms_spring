@@ -6,32 +6,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.wms.DAO.GroupRepository;
+import com.wms.DAO.CompMemberRepository;
 import com.wms.DAO.UserRepository;
 import com.wms.auth.entity.CustomAuthenticationException;
 import com.wms.auth.entity.CustomUserDetails;
-import com.wms.bean.Group;
+import com.wms.bean.Company;
 import com.wms.bean.User;
+import com.wms.bean.relations.mtm.CompanyMember;
 
 @Service
 public class CustomUserDetailService {
-	
-	@Autowired
-	private GroupRepository groupRepository;
+
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CompMemberRepository compMemberRepository;
 
-	public UserDetails loadUserByUsernameAndDomain(String email, Long groupid) throws AuthenticationException {
+	public UserDetails loadUserByUsernameAndDomain(String email, String cname) throws AuthenticationException {
 		
-		Group group = groupRepository.findOne(groupid);
-		if(group == null)
-			throw new CustomAuthenticationException("Group: " + groupid + " not found");
+		CompanyMember cm = compMemberRepository.findByCompanyNameAndMemberEmail(cname, email);
 		
-		User user = userRepository.findByEmailAndGroupId(email, groupid);
-		if(user == null)
-			throw new UsernameNotFoundException(email + " is not in group: " + groupid);
+		if(cm == null)
+			throw new CustomAuthenticationException("Email or company infomation provided is not valid.");
 		
-		return new CustomUserDetails(user, group);
+		
+		return new CustomUserDetails(cm.getMember(), cm.getCompany());
 	}
 }

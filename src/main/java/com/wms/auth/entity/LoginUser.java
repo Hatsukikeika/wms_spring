@@ -2,7 +2,7 @@ package com.wms.auth.entity;
 
 public class LoginUser {
 	
-	private Long groupspace;
+	private String companyname;
 	
 	private String email;
 	
@@ -14,12 +14,12 @@ public class LoginUser {
 		
 	}
 
-	public Long getGroupspace() {
-		return groupspace;
+	public String getCompanyName() {
+		return companyname;
 	}
 
-	public void setGroupspace(Long groupspace) {
-		this.groupspace = groupspace;
+	public void setCompanyName(String companyname) {
+		this.companyname = companyname;
 	}
 
 	public String getEmail() {

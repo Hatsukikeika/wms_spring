@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,6 +24,12 @@ public class User extends HasIdentity implements Serializable  {
 	@Column(name="user_password", nullable = false)
 	private String password;
 
+	@Column(name="user_firstname", nullable = false)
+	private String firstname;
+	
+	@Column(name="user_lastname", nullable = false)
+	private String lastname;
+	
 	@Column(name="user_role", nullable = false, columnDefinition="int")
 	private UserRole role;
 
@@ -33,32 +39,29 @@ public class User extends HasIdentity implements Serializable  {
 	@Column(name="user_isValidated", nullable = false, columnDefinition="tinyint default 0")
 	private Boolean activated;
 	
-	
-	private String company;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_group_openid", nullable = false, referencedColumnName = "data_global_id",
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_company_openid", nullable = false, referencedColumnName = "data_global_id",
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
-	private Group group;
+	private Company ownedCompany;
 	
 	public User() {
 		super();
 		this.isban = false;
 	}
 	
-	public User(Group group) {
+	public User(Company company) {
 		super();
 		this.isban = false;
-		this.group = group;
+		this.ownedCompany = company;
 	}
 
-	public User(String email, String password, UserRole role, Group group) {
+	public User(String email, String password, UserRole role, Company company) {
 		super();
 		this.isban = false;
 		this.email = email;
 		this.password = password;
 		this.role = role;
-		this.group = group;
+		this.ownedCompany = company;
 	}
 
 
@@ -99,12 +102,12 @@ public class User extends HasIdentity implements Serializable  {
 	}
 
 	@JsonIgnore
-	public Group getGroup() {
-		return group;
+	public Company getGroup() {
+		return ownedCompany;
 	}
 
-	public User setGroup(Group group) {
-		this.group = group;
+	public User setGroup(Company company) {
+		this.ownedCompany = company;
 		return this;
 	}
 
@@ -114,6 +117,33 @@ public class User extends HasIdentity implements Serializable  {
 
 	public User setActivated(Boolean activated) {
 		this.activated = activated;
+		return this;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public User setFirstname(String firstname) {
+		this.firstname = firstname;
+		return this;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public User setLastname(String lastname) {
+		this.lastname = lastname;
+		return this;
+	}
+
+	public Company getOwnedCompany() {
+		return ownedCompany;
+	}
+
+	public User setOwnedCompany(Company company) {
+		this.ownedCompany = company;
 		return this;
 	}
 	
