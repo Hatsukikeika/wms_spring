@@ -29,11 +29,14 @@ public class Company extends HasIdentity implements Serializable {
 	@Column(name="comp_baned")
 	private Boolean baned;
 	
-	@Column(name="comp_inv")
+	@Column(name="comp_invcode")
 	private String invcode;
 	
 	@OneToOne(mappedBy="ownedCompany")
 	private User owner;
+	
+	@OneToOne(mappedBy="company")
+	private Inventory inventory;
 	
 	public Company() {
 		super();
@@ -97,6 +100,15 @@ public class Company extends HasIdentity implements Serializable {
 	public GroupType getType() {
 		
 		return type;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+	public Company setInventory(Inventory inventory) {
+		this.inventory = inventory;
+		return this;
 	}	
 	
 }

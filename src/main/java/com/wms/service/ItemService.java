@@ -2,15 +2,16 @@ package com.wms.service;
 
 import org.springframework.data.domain.Page;
 
+import com.wms.bean.Company;
 import com.wms.bean.Item;
 
 public interface ItemService {
 
-	void addItem(long groupid, Item item) ;
+	void addItem(Company company , Item item) ;
 	
-	void updateItem(long groupid, long itemid, Item item);
+	void updateItem(Company company , Item item);
 	
-	void deleteItem(long groupid, long itemid);
+	void deleteItem(Company company , Item item);
 	
 	Page<Item> itemByGroup(long groupid, int pageNum, int pageSize);
 }
