@@ -9,6 +9,7 @@ public class JwtUserInfo implements AuthInfoExtraction {
 
 	public static final String OPTKEY_COMPNAME = "company_name";
 	public static final String OPTKEY_COMPTYPE = "company_type";
+	public static final String OPTKEY_COMPID = "company_id";
 	public static final String OPTKEY_USRNAME = "username";
 	public static final String OPTKEY_USRUID = "uuid";
 	
@@ -26,8 +27,9 @@ public class JwtUserInfo implements AuthInfoExtraction {
 	@Override
 	public Map<String, Object> getOpts() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put(OPTKEY_COMPNAME, customUserDetails.getBelongsTo().getId());
+		map.put(OPTKEY_COMPNAME, customUserDetails.getBelongsTo().getName());
 		map.put(OPTKEY_COMPTYPE, customUserDetails.getBelongsTo().getType().asNum());
+		map.put(OPTKEY_COMPID, customUserDetails.getBelongsTo().getOpenId());
 		map.put(OPTKEY_USRNAME, customUserDetails.getUsername());
 		map.put(OPTKEY_USRUID, customUserDetails.getUser().getUuid());
 		return map;

@@ -46,6 +46,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                     new UsernamePasswordAuthenticationToken(loginUser, null)
             );
         } catch (IOException e) {
+        	System.out.println(e);
         	throw new CustomAuthenticationException("Incorrect Request Format");
         }
     }

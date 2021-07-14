@@ -9,6 +9,8 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 	
 	Company findByName(String name);
 	
+	Company findByOpenid(Long openid);
+	
 	Company findByInvcode(String invcode);
 
 }

@@ -38,6 +38,7 @@ public abstract class HasIdentity {
 		this.createOn = this.updateOn = new Date().getTime();
 		this.openid = IdGen.nextId();
 		this.uuid = UUID.randomUUID().toString();
+		this.isDel = false;
 	}
 	
 	public Long getId() {
@@ -66,6 +67,44 @@ public abstract class HasIdentity {
 
 	public void setUpdateOn() {
 		this.updateOn = new Date().getTime();
+	}
+
+	public Long getOpenid() {
+		return openid;
+	}
+
+	public HasIdentity setOpenid(Long openid) {
+		this.openid = openid;
+		return this;
+	}
+
+	public Boolean getIsDel() {
+		return isDel;
+	}
+
+	public HasIdentity setIsDel(Boolean isDel) {
+		this.isDel = isDel;
+		return this;
+	}
+
+	public HasIdentity setUuid(String uuid) {
+		this.uuid = uuid;
+		return this;
+	}
+
+	public HasIdentity setId(Long id) {
+		this.id = id;
+		return this;
+	}
+
+	public HasIdentity setCreateOn(Long createOn) {
+		this.createOn = createOn;
+		return this;
+	}
+
+	public HasIdentity setUpdateOn(Long updateOn) {
+		this.updateOn = updateOn;
+		return this;
 	}
 	
 	

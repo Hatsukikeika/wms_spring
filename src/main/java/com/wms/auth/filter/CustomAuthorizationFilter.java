@@ -46,10 +46,15 @@ public class CustomAuthorizationFilter extends BasicAuthenticationFilter {
 			String useruuid = (String) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_USRUID);
 			String companyname = (String) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_COMPNAME);
 			Number companytype = (Number) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_COMPTYPE);
+			Number companyid = (Number) JwtUtil.getValueByKey(token, JwtUserInfo.OPTKEY_COMPID);
 			Number userid = (Number) JwtUtil.getIdentifier(token);
-			if (role != null && username != null && useruuid != null && companyname != null && userid != null && companytype != null) {
+			if (role != null &&
+					username != null &&	useruuid != null &&
+					companyname != null && userid != null &&
+					companytype != null && companyid != null) {
 				request.setAttribute("$USERNAME", username);
 				request.setAttribute("$COMPNAME", companyname);
+				request.setAttribute("$COMPID", companyid.longValue());
 				request.setAttribute("$COMPTYPE", GroupType.get(companytype.intValue()));
 				request.setAttribute("$USERUUID", useruuid);
 				request.setAttribute("$USERID", userid.longValue());

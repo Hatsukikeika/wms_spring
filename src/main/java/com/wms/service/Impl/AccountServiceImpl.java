@@ -18,6 +18,7 @@ import com.wms.DAO.FriendPairRepository;
 import com.wms.DAO.UserRepository;
 import com.wms.DAO.ValidationRepository;
 import com.wms.bean.Company;
+import com.wms.bean.Inventory;
 import com.wms.bean.User;
 import com.wms.bean.Validation;
 import com.wms.bean.enu.GroupType;
@@ -53,6 +54,9 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private FriendPairRepository friendPairRepository;
+	
+	@Autowired
+	private InventoryRepository inventoryRepository;
 
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -82,8 +86,10 @@ public class AccountServiceImpl implements AccountService {
 		if (gtype == GroupType.TYPE_SELLER || gtype == GroupType.TYPE_STORAGE) {
 			// Parameter is save
 			// create user group
-			Company company = new Company().setType(gtype).setActivated(false).setName((String) signup.get("cname"));
+			Company company = new Company().setType(gtype).setActivated(true).setName((String) signup.get("cname"));
+			Inventory inventory = new Inventory(company);
 			companyRepository.save(company);
+			inventoryRepository.save(inventory);
 
 			Company linker = null;
 			if (invcode != null) {
@@ -104,7 +110,10 @@ public class AccountServiceImpl implements AccountService {
 			}
 
 			// create root user using given group
-			User user = new User(company).setActivated(false).setEmail(email)
+			User user = new User(company)
+					.setFirstname((String) signup.get("firstname"))
+					.setLastname((String) signup.get("lastname"))
+					.setActivated(false).setEmail(email)
 					.setPassword(bCryptPasswordEncoder.encode(password));
 
 			CompanyMember cm = new CompanyMember();
@@ -129,7 +138,7 @@ public class AccountServiceImpl implements AccountService {
 
 			compMemberRepository.save(cm);
 			
-			sendValidationEmail(email, company.getId(), null, val);
+			//sendValidationEmail(email, company.getId(), null, val);
 
 		} else {
 			throw new RegistrationException("invalid group type");

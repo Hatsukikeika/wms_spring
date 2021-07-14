@@ -33,8 +33,10 @@ public class Inventory extends HasIdentity {
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
     private Company company;
     
-    public Inventory() {
-    	
+    public Inventory() {}
+    
+    public Inventory(Company company) {
+    	this.company = company;
     }
 	
     public void putItem(Item item) {

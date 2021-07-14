@@ -21,7 +21,7 @@ public class Package extends HasIdentity {
 	@Column(name="package_weight", nullable = false)
 	private Double weight;
 	
-	@Column(name="package_weight", nullable = false)
+	@Column(name="package_weight", nullable = true)
 	private String notes;
 	
 	

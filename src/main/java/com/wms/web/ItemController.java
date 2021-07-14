@@ -29,11 +29,11 @@ public class ItemController {
 	private ItemService itemService;
 
     // Get user info for logged in user.
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Transactional
-    public ResponseBodyWrapper getAccountInfo(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
+    public ResponseBodyWrapper getAccountInfo(@RequestAttribute("$COMPNAME") String compname, @RequestBody Item item) throws DataNotFoundException {
     	
-    	Company company = companyRepository.getOne(compid);
+    	Company company = companyRepository.findByName(compname);
     	
     	itemService.addItem(company, item);
     	

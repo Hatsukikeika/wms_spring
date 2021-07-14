@@ -14,11 +14,11 @@ public class LoginUser {
 		
 	}
 
-	public String getCompanyName() {
+	public String getCompanyname() {
 		return companyname;
 	}
 
-	public void setCompanyName(String companyname) {
+	public void setCompanyname(String companyname) {
 		this.companyname = companyname;
 	}
 
@@ -36,10 +36,6 @@ public class LoginUser {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public void setRememberMe(Integer rememberMe) {
-		this.rememberMe = rememberMe;
 	}
 	
 	public boolean isRememberMe() {

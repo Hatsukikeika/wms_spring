@@ -26,8 +26,8 @@ public class Company extends HasIdentity implements Serializable {
 	@Column(name="comp_activated")
 	private Boolean activated;
 	
-	@Column(name="comp_baned")
-	private Boolean baned;
+	@Column(name="comp_banned")
+	private Boolean banned;
 	
 	@Column(name="comp_invcode")
 	private String invcode;
@@ -40,6 +40,7 @@ public class Company extends HasIdentity implements Serializable {
 	
 	public Company() {
 		super();
+		this.banned = false;
 	}
 
 	public String getName() {
@@ -61,11 +62,11 @@ public class Company extends HasIdentity implements Serializable {
 	}
 
 	public Boolean getBaned() {
-		return baned;
+		return banned;
 	}
 
 	public Company setBaned(Boolean baned) {
-		this.baned = baned;
+		this.banned = baned;
 		return this;
 	}
 
