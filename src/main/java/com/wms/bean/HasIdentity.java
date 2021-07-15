@@ -17,11 +17,12 @@ public abstract class HasIdentity {
 	@Column(name = "data_uuid", unique = true, nullable = false)
 	private String uuid; // scope: server. 
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "data_id")
-	private Long id; //  scope: table. 
+	//@Id
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	//@Column(name = "data_id")
+	//private Long id; //  scope: table. 
 	
+	@Id
 	@Column(name = "data_global_id", unique = true, nullable = false)
 	private Long openid; // scope: global. 
 	
@@ -39,14 +40,6 @@ public abstract class HasIdentity {
 		this.openid = IdGen.nextId();
 		this.uuid = UUID.randomUUID().toString();
 		this.isDel = false;
-	}
-	
-	public Long getId() {
-		return this.id;
-	}
-	
-	public Long getOpenId() {
-		return this.openid;
 	}
 	
 	public String getUuid() {
@@ -89,11 +82,6 @@ public abstract class HasIdentity {
 
 	public HasIdentity setUuid(String uuid) {
 		this.uuid = uuid;
-		return this;
-	}
-
-	public HasIdentity setId(Long id) {
-		this.id = id;
 		return this;
 	}
 

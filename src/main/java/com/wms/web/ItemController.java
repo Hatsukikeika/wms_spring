@@ -31,13 +31,25 @@ public class ItemController {
     // Get user info for logged in user.
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Transactional
-    public ResponseBodyWrapper getAccountInfo(@RequestAttribute("$COMPNAME") String compname, @RequestBody Item item) throws DataNotFoundException {
+    public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
     	
-    	Company company = companyRepository.findByName(compname);
+    	Company company = companyRepository.findByOpenid(compid);
     	
     	itemService.addItem(company, item);
     	
     	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
+    	
+        return responseBodyWrapper;
+    }
+    
+    // Get user info for logged in user.
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @Transactional
+    public ResponseBodyWrapper getItemsInInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper().putData(itemService.getItemList(company, pageNum, pageSize));
     	
         return responseBodyWrapper;
     }

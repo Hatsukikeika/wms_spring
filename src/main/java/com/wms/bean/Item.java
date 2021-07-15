@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OrderColumn;
@@ -12,9 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "wmsitem")
-public class Item extends HasIdentity implements Serializable {
+@DiscriminatorValue("item")
+public class Item extends Package implements Serializable {
 	
-	@OrderColumn(name="companyitem_sku")
 	@ElementCollection
 	private List<String> SKU;
 	

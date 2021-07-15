@@ -38,8 +38,6 @@ public class CustomUserDetails implements UserDetails {
 		this.belongsTo = belongsTo;
 	}
 
-
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Collections.singleton(new SimpleGrantedAuthority(user.getRole().asStr()));

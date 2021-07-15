@@ -13,5 +13,5 @@ public interface ItemService {
 	
 	void deleteItem(Company company , Item item);
 	
-	Page<Item> itemByGroup(long groupid, int pageNum, int pageSize);
+	Page<Item> getItemList(Company company , int pageNum, int pageSize);
 }

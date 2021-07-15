@@ -1,12 +1,22 @@
 package com.wms.bean;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorType;
 
-@MappedSuperclass
-public class Package extends HasIdentity {
+@Entity
+@Table(name = "wmspackage")
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name = "package_discriminator", discriminatorType = DiscriminatorType.STRING)
+public abstract class Package extends HasIdentity {
 	
 	
 	@Column(name="package_length", nullable = false)
@@ -21,10 +31,56 @@ public class Package extends HasIdentity {
 	@Column(name="package_weight", nullable = false)
 	private Double weight;
 	
-	@Column(name="package_weight", nullable = true)
+	@Column(name="package_notes", nullable = true)
 	private String notes;
 	
+	@OneToMany
+	private Map<Long, Package> package_inside;
+
+	public Double getLength() {
+		return length;
+	}
+
+	public Package setLength(Double length) {
+		this.length = length;
+		return this;
+	}
+
+	public Double getHeight() {
+		return height;
+	}
+
+	public Package setHeight(Double height) {
+		this.height = height;
+		return this;
+	}
+
+	public Double getWidth() {
+		return width;
+	}
+
+	public Package setWidth(Double width) {
+		this.width = width;
+		return this;
+	}
+
+	public Double getWeight() {
+		return weight;
+	}
+
+	public Package setWeight(Double weight) {
+		this.weight = weight;
+		return this;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public Package setNotes(String notes) {
+		this.notes = notes;
+		return this;
+	}
 	
-	private List<Package> package_insde;
 	
 }

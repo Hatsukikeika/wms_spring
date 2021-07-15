@@ -33,14 +33,19 @@ public class Inventory extends HasIdentity {
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
     private Company company;
     
-    public Inventory() {}
-    
+    public Inventory() {
+    	this.total_approxweight = 0;
+    	this.total_items = 0;
+    }
+	
     public Inventory(Company company) {
     	this.company = company;
+    	this.total_approxweight = 0;
+    	this.total_items = 0;
     }
 	
     public void putItem(Item item) {
-    	Long itemid = item.getId();
+    	Long itemid = item.getOpenid();
     	
     	if(items_inbag.containsKey(itemid)) {
     		throw new RuntimeException();
@@ -52,8 +57,6 @@ public class Inventory extends HasIdentity {
     	
     	items_inbag.put(itemid, item);
     	total_items++;
-    	
-
     }
 
 	public Integer getTotal_approxweight() {

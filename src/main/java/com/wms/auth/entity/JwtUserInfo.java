@@ -21,7 +21,7 @@ public class JwtUserInfo implements AuthInfoExtraction {
 
 	@Override
 	public Object getId() {
-		return customUserDetails.getUser().getId();
+		return customUserDetails.getUser().getOpenid();
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class JwtUserInfo implements AuthInfoExtraction {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put(OPTKEY_COMPNAME, customUserDetails.getBelongsTo().getName());
 		map.put(OPTKEY_COMPTYPE, customUserDetails.getBelongsTo().getType().asNum());
-		map.put(OPTKEY_COMPID, customUserDetails.getBelongsTo().getOpenId());
+		map.put(OPTKEY_COMPID, customUserDetails.getBelongsTo().getOpenid());
 		map.put(OPTKEY_USRNAME, customUserDetails.getUsername());
 		map.put(OPTKEY_USRUID, customUserDetails.getUser().getUuid());
 		return map;

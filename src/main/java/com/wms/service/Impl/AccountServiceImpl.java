@@ -172,7 +172,7 @@ public class AccountServiceImpl implements AccountService {
 		}else if(validation.getExpire() < new Date().getTime()) {
 			validationRepository.delete(validation);
 			throw new ObjectExpiredException("validation");
-		}else if(!validation.getKey().equals(key) || !user.getId().equals(userid)) {
+		}else if(!validation.getKey().equals(key) || !user.getOpenid().equals(userid)) {
 			throw new BadAuthParamException("invalid validation pair");
 		}else {
 			if(user.getRole() == UserRole.SELLER ||user.getRole() == UserRole.STORAGE)
@@ -242,7 +242,7 @@ public class AccountServiceImpl implements AccountService {
 
 			String vallink = String.format(
 					"http://ec2-3-84-110-44.compute-1.amazonaws.com/api/account/val?userid=%s&vid=%s&key=%s",
-					val.getUser().getId(), val.getId(), val.getKey());
+					val.getUser().getOpenid(), val.getOpenid(), val.getKey());
 
 			new AccMailContent().addReceivers(email).setSubject(subject)
 					.setTextBody("Please remember your company name to login <br/>" + "Company Name: "

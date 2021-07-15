@@ -17,12 +17,12 @@ import com.wms.bean.User;
 @Table(name="wmscompany_member")
 public class CompanyMember extends HasIdentity {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "compmember_company", nullable = false, referencedColumnName = "data_global_id",
 		foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
 	private Company company;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "compmember_member", nullable = false, referencedColumnName = "data_global_id",
 		foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
 	private User member;
