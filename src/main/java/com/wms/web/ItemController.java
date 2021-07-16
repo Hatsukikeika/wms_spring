@@ -1,5 +1,8 @@
 package com.wms.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,6 @@ public class ItemController {
 	@Autowired
 	private ItemService itemService;
 
-    // Get user info for logged in user.
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Transactional
     public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
@@ -42,7 +44,22 @@ public class ItemController {
         return responseBodyWrapper;
     }
     
-    // Get user info for logged in user.
+    @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
+    @Transactional
+    public ResponseBodyWrapper addItemsToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody List<Item> items) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	for(Item i : items) {
+        	itemService.addItem(company, i);
+    	}
+
+    	
+    	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
+    	
+        return responseBodyWrapper;
+    }
+    
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     @Transactional
     public ResponseBodyWrapper getItemsInInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) throws DataNotFoundException {

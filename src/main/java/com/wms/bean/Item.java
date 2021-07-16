@@ -17,7 +17,8 @@ import javax.persistence.Table;
 public class Item extends Package implements Serializable {
 	
 	@ElementCollection
-	private List<String> SKU;
+	@Column(name="companyitem_sku")
+	private List<String> sku;
 	
 	@Column(name="companyitem_iname")
 	private String name;
@@ -33,11 +34,11 @@ public class Item extends Package implements Serializable {
 	}
 
 	public List<String> getSKU() {
-		return SKU;
+		return sku;
 	}
 
-	public Item setSKU(List<String> sKU) {
-		SKU = sKU;
+	public Item setSKU(List<String> SKU) {
+		this.sku = SKU;
 		return this;
 	}
 
