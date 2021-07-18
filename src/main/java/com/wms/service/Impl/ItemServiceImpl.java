@@ -15,6 +15,7 @@ import com.wms.bean.Company;
 import com.wms.bean.Inventory;
 import com.wms.bean.Item;
 import com.wms.service.ItemService;
+import com.wms.service.helper.ObjectHelper;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -24,6 +25,8 @@ public class ItemServiceImpl implements ItemService {
 
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	private ObjectHelper<Item> itemHelper = new ObjectHelper<>();
 	
 	@Override
 	public void addItem(Company company, Item item) {
@@ -40,16 +43,51 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public void updateItem(Company company, Item item) {
-		// TODO Auto-generated method stub
+		
+		Item i = itemRepository.getOne(item.getOpenid());
+		
+		if(i == null)
+			throw new RuntimeException();
+		
+		try {
+			i = itemHelper.mergeObjects(i, item, "uuid","openid","createOn","updateOn","isDel");
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			throw new RuntimeException();
+		}
+		
+		i.setUpdateOn();
+		
+		itemRepository.save(i);
 
 	}
 
 	@Override
-	public void deleteItem(Company company, Item item) {
-		// TODO Auto-generated method stub
-
+	public void deleteItem(Company company, Long item) {
+		
+		Item i = company.getInventory().getItem(item);
+		
+		if(i == null)
+			throw new RuntimeException();
+		
+		i.setIsDel(true).setUpdateOn();
+		
+		itemRepository.save(i);
 	}
 
+	@Override
+	public void deleteItemPerma(Company company, Long item) {
+		
+		Item i = company.getInventory().getItem(item);
+		
+		if(i == null)
+			throw new RuntimeException();
+		
+		if(i.getIsDel() != true)
+			throw new RuntimeException();
+		
+		itemRepository.delete(i);
+	}
+	
 	@Override
 	public Page<Item> getItemList(Company company, int pageNum, int pageSize) {
 		

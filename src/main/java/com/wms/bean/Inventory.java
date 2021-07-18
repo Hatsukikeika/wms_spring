@@ -71,6 +71,11 @@ public class Inventory extends HasIdentity {
 	public Map<Long, Item> getItems_inbag() {
 		return items_inbag;
 	}
+	
+	public Item getItem(Long itemid) {
+		
+		return items_inbag.get(itemid);
+	}
 
 	public Inventory setItems_inbag(Map<Long, Item> items_inbag) {
 		this.items_inbag = items_inbag;

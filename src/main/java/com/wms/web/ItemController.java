@@ -71,4 +71,42 @@ public class ItemController {
         return responseBodyWrapper;
     }
 	
+    @RequestMapping(value = "/del", method = RequestMethod.DELETE)
+    @Transactional
+    public ResponseBodyWrapper removeItem(@RequestAttribute("$COMPID") Long compid, @RequestParam Long item) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	itemService.deleteItem(company, item);
+    	
+    	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
+    	
+        return responseBodyWrapper;
+    }
+    
+    @RequestMapping(value = "/forcedel", method = RequestMethod.DELETE)
+    @Transactional
+    public ResponseBodyWrapper removeItemPerma(@RequestAttribute("$COMPID") Long compid, @RequestParam Long item) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	itemService.deleteItem(company, item);
+    	
+    	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
+    	
+        return responseBodyWrapper;
+    }
+    
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @Transactional
+    public ResponseBodyWrapper updateItem(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	itemService.updateItem(company, item);
+    	
+    	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
+    	
+        return responseBodyWrapper;
+    }
 }

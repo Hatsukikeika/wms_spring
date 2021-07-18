@@ -11,7 +11,9 @@ public interface ItemService {
 	
 	void updateItem(Company company , Item item);
 	
-	void deleteItem(Company company , Item item);
+	void deleteItem(Company company , Long itemid);
+	
+	void deleteItemPerma(Company company , Long itemid);
 	
 	Page<Item> getItemList(Company company , int pageNum, int pageSize);
 }
