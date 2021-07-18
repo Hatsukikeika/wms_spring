@@ -90,7 +90,7 @@ public class ItemController {
     	
     	Company company = companyRepository.findByOpenid(compid);
     	
-    	itemService.deleteItem(company, item);
+    	itemService.deleteItemPerma(company, item);
     	
     	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
     	

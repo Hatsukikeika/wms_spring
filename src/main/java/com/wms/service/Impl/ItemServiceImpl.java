@@ -44,20 +44,9 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void updateItem(Company company, Item item) {
 		
-		Item i = itemRepository.getOne(item.getOpenid());
+		item.setUpdateOn();
 		
-		if(i == null)
-			throw new RuntimeException();
-		
-		try {
-			i = itemHelper.mergeObjects(i, item, "uuid","openid","createOn","updateOn","isDel");
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			throw new RuntimeException();
-		}
-		
-		i.setUpdateOn();
-		
-		itemRepository.save(i);
+		itemRepository.save(item);
 
 	}
 
@@ -77,7 +66,11 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void deleteItemPerma(Company company, Long item) {
 		
-		Item i = company.getInventory().getItem(item);
+		Inventory inv = company.getInventory();
+		
+		Item i = inv.getItem(item);
+		
+		inv.getItems_inbag().remove(item);
 		
 		if(i == null)
 			throw new RuntimeException();
