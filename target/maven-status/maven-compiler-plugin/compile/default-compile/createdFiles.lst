@@ -4,6 +4,7 @@ com\wms\DAO\CompanyRepository.class
 com\wms\service\Impl\AccountServiceImpl$1.class
 com\wms\bean\relations\mtm\CompanyMember.class
 com\wms\service\Impl\AccountServiceImpl.class
+com\wms\bean\enu\ServiceClass.class
 com\wms\auth\entity\CustomAuthenticationToken.class
 com\wms\model\ResponseBodyWrapper.class
 com\wms\bean\relations\otm\CompanyOgAddr.class

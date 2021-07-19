@@ -87,14 +87,14 @@ public class ItemServiceImpl implements ItemService {
 		Pageable pagination = new PageRequest(pageNum, pageSize);
 		List<Item> itemlist = new ArrayList<Item>(company.getInventory().getItems_inbag().values());
 		
-        int start =  new PageRequest(pageNum, pageSize).getOffset();
-        int end = (start + new PageRequest(pageNum, pageSize).getPageSize()) > itemlist.size() ? itemlist.size() : (start + new PageRequest(pageNum, pageSize).getPageSize());
+        int start =  pagination.getOffset();
+        int end = (start + pagination.getPageSize()) > itemlist.size() ? itemlist.size() : (start + pagination.getPageSize());
 		
         if(start > end) {
         	throw new RuntimeException("Bad pagination request");
         }
         
-		Page<Item> page = new PageImpl<Item>(itemlist.subList(start, end),new PageRequest(pageNum, pageSize), itemlist.size());
+		Page<Item> page = new PageImpl<Item>(itemlist.subList(start, end),pagination, itemlist.size());
 		
 		return page;
 	}

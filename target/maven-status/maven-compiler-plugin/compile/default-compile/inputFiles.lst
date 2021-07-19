@@ -61,6 +61,7 @@ D:\AntoMirai\wms_spring\src\main\java\com\wms\service\Impl\GroupServiceImpl.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\auth\CustomUserDetailService.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\utils\security\JwtUtil.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\Address.java
+D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\enu\ServiceClass.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\Item.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\enu\UserRole.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\service\Exceptions\FieldMissingException.java

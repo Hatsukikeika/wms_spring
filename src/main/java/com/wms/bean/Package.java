@@ -31,8 +31,14 @@ public abstract class Package extends HasIdentity {
 	@Column(name="package_weight", nullable = false)
 	private Double weight;
 	
+	@Column(name="package_wunit", nullable = false)
+	private String weight_unit;
+	
+	@Column(name="package_sunit", nullable = false)
+	private String size_unit;
+	
 	@Column(name="package_notes", nullable = true)
-	private String notes;
+	private String notes;	
 	
 	@OneToMany
 	private Map<Long, Package> package_inside;
@@ -81,6 +87,25 @@ public abstract class Package extends HasIdentity {
 		this.notes = notes;
 		return this;
 	}
+
+	public String getWeight_unit() {
+		return weight_unit;
+	}
+
+	public Package setWeight_unit(String weight_unit) {
+		this.weight_unit = weight_unit;
+		return this;
+	}
+
+	public String getSize_unit() {
+		return size_unit;
+	}
+
+	public Package setSize_unit(String size_unit) {
+		this.size_unit = size_unit;
+		return this;
+	}
+	
 	
 	
 }

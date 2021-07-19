@@ -25,16 +25,16 @@ public class FriendPair extends HasIdentity implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "friendpair_linker", nullable = false, referencedColumnName = "data_global_id",
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
-	private Company linker;
+	private Company warehouse;
 	
 	public FriendPair() {
 		super();
 	}
 	
-	public FriendPair(Company seller, Company linker) {
+	public FriendPair(Company seller, Company warehouse) {
 		super();
 		this.seller = seller;
-		this.linker = linker;
+		this.warehouse = warehouse;
 	}
 
 	public Company getSeller() {
@@ -46,12 +46,12 @@ public class FriendPair extends HasIdentity implements Serializable {
 		return this;
 	}
 
-	public Company getLinker() {
-		return linker;
+	public Company getWarehouse() {
+		return warehouse;
 	}
 
-	public FriendPair setLinker(Company linker) {
-		this.linker = linker;
+	public FriendPair setWarehouse(Company warehouse) {
+		this.warehouse = warehouse;
 		return this;
 	}
 	

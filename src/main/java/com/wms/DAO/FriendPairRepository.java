@@ -12,7 +12,7 @@ public interface FriendPairRepository extends JpaRepository<FriendPair, Long> {
 
 	Page<FriendPair> findBySellerOpenid(Long sellerid, Pageable pagination);
 	
-	Page<FriendPair> findByLinkerOpenid(Long linkerid, Pageable pagination);
+	Page<FriendPair> findByWarehouseOpenid(Long warehouseid, Pageable pagination);
 	
-	boolean existsBySellerAndLinker(Company seller, Company linker);
+	boolean existsBySellerAndWarehouse(Company seller, Company warehouse);
 }

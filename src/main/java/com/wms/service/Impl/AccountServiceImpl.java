@@ -207,7 +207,7 @@ public class AccountServiceImpl implements AccountService {
 		User user = userRepository.findOne(userid);
 		entityManager.detach(user);
 
-		return user.setPassword(null);
+		return user;
 	}
 
 	private void checkEmailAndPassword(String email, String password) {

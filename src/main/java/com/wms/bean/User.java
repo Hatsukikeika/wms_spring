@@ -11,7 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.wms.bean.enu.UserRole;
 
 @Entity
@@ -42,6 +44,7 @@ public class User extends HasIdentity implements Serializable  {
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_company_openid", nullable = false, referencedColumnName = "data_global_id",
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","uuid","openid","createOn","updateOn","isDel","owner","inventory"})
 	private Company ownedCompany;
 	
 	public User() {
@@ -74,6 +77,7 @@ public class User extends HasIdentity implements Serializable  {
 		return this;
 	}
 
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public String getPassword() {
 		return password;
 	}
@@ -98,16 +102,6 @@ public class User extends HasIdentity implements Serializable  {
 
 	public User setIsban(Boolean isban) {
 		this.isban = isban;
-		return this;
-	}
-
-	@JsonIgnore
-	public Company getGroup() {
-		return ownedCompany;
-	}
-
-	public User setGroup(Company company) {
-		this.ownedCompany = company;
 		return this;
 	}
 
@@ -146,7 +140,5 @@ public class User extends HasIdentity implements Serializable  {
 		this.ownedCompany = company;
 		return this;
 	}
-	
-	
 
 }

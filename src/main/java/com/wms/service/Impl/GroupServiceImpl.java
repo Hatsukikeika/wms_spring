@@ -25,7 +25,7 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Page<FriendPair> getSellerList(Long groupid, int pageNum, int pageSize) {
 		Pageable pagination = new PageRequest(pageNum, pageSize);
-		return friendPairRepository.findByLinkerOpenid(groupid, pagination);
+		return friendPairRepository.findByWarehouseOpenid(groupid, pagination);
 	}
 
 }
