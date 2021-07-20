@@ -106,6 +106,4 @@ public abstract class Package extends HasIdentity {
 		return this;
 	}
 	
-	
-	
 }

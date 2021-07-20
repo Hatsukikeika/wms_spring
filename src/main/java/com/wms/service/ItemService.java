@@ -15,5 +15,9 @@ public interface ItemService {
 	
 	void deleteItemPerma(Company company , Long itemid);
 	
+	Page<Item> searchUsingSku(Company company , String sku);
+	
+	Page<Item> searchUsingName(Company company , String name, int pageNum);
+	
 	Page<Item> getItemList(Company company , int pageNum, int pageSize);
 }

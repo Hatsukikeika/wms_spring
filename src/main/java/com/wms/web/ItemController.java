@@ -20,6 +20,7 @@ import com.wms.bean.User;
 import com.wms.model.ResponseBodyWrapper;
 import com.wms.service.ItemService;
 import com.wms.service.Exceptions.DataNotFoundException;
+import com.wms.service.Exceptions.IllegalActionException;
 
 @RestController
 @RequestMapping(value = "/api/item")
@@ -69,6 +70,24 @@ public class ItemController {
     	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper().putData(itemService.getItemList(company, pageNum, pageSize));
     	
         return responseBodyWrapper;
+    }
+    
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @Transactional
+    public ResponseBodyWrapper searchItemsInInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "sku") String by,
+    		@RequestParam String keyword) throws DataNotFoundException {
+    	
+    	Company company = companyRepository.findByOpenid(compid);
+    	
+    	switch(by) {
+    	case "sku":
+    		return new ResponseBodyWrapper().putData(itemService.searchUsingSku(company, keyword));
+    	case "name":
+    		return new ResponseBodyWrapper().putData(itemService.searchUsingName(company, keyword, pageNum));
+    	default:
+    		throw new IllegalActionException("Unknow search filter");
+    	}
+    	    	
     }
 	
     @RequestMapping(value = "/del", method = RequestMethod.DELETE)
