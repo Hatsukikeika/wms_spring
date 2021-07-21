@@ -52,9 +52,23 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void updateItem(Company company, Item item) {
 		
-		item.setUpdateOn();
+		Item toUpdate = itemRepository.findOne(item.getOpenid());
 		
-		itemRepository.save(item);
+		toUpdate
+		.setName(item.getName())
+		.setSKU(item.getSKU())
+		.setUnit(item.getUnit())
+		.setHeight(item.getHeight())
+		.setLength(item.getLength())
+		.setWidth(item.getWidth())
+		.setWeight(item.getWeight())
+		.setNotes(item.getNotes())
+		.setWeight_unit(item.getWeight_unit())
+		.setSize_unit(item.getSize_unit());
+		
+		toUpdate.setUpdateOn();
+		
+		itemRepository.save(toUpdate);
 
 	}
 

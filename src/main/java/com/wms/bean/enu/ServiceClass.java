@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum ServiceClass {
 
-	TYPE_OFFICAL(0, "OFFICAL"), TYPE_SELLER(1, "SELLER"), TYPE_STORAGE(2, "STORAGE_PROVIDER");
+	TYPE_OFFICAL(0, "FORECAST"), TYPE_SELLER(1, "DIRECTORDER");
 
 	private final Integer numForm;
 
