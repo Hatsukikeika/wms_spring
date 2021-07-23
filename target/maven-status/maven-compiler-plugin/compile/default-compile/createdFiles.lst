@@ -15,6 +15,7 @@ com\wms\bean\relations\otm\CompanyRcAddr.class
 com\wms\auth\CustomAuthenticationProvider.class
 com\wms\service\Impl\RedisServiceImpl.class
 com\wms\service\Exceptions\ObjectExpiredException.class
+com\wms\bean\BoughtService.class
 com\wms\utils\security\AuthInfoExtraction.class
 com\wms\auth\CustomUserDetailService.class
 com\wms\auth\entity\CustomUserDetails.class
@@ -35,6 +36,7 @@ com\wms\service\Impl\ItemServiceImpl.class
 com\wms\utils\mailing\MailContent.class
 com\wms\service\Exceptions\DataNotFoundException.class
 com\wms\bean\component\TimeStamp.class
+com\wms\bean\DTO\ItemCreationRequest.class
 com\wms\utils\ID\IdGen.class
 com\wms\service\Exceptions\BadAuthParamException.class
 com\wms\bean\enu\GroupType.class
@@ -68,6 +70,7 @@ com\wms\JunkyFlake\JunkyFlake.class
 com\wms\bean\Address.class
 com\wms\bean\relations\mtm\FriendPair.class
 com\wms\auth\entity\JwtUserInfo.class
+com\wms\bean\PriceMenu.class
 com\wms\DAO\ValidationRepository.class
 com\wms\bean\enu\RequestStatus.class
 com\wms\service\AccountService.class

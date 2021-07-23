@@ -1,11 +1,12 @@
 package com.wms.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wms.DAO.CompanyRepository;
 import com.wms.bean.Company;
 import com.wms.bean.Item;
-import com.wms.bean.User;
+import com.wms.bean.DTO.ItemCreationRequest;
 import com.wms.model.ResponseBodyWrapper;
 import com.wms.service.ItemService;
 import com.wms.service.Exceptions.DataNotFoundException;
@@ -24,6 +25,7 @@ import com.wms.service.Exceptions.IllegalActionException;
 
 @RestController
 @RequestMapping(value = "/api/item")
+@Validated
 public class ItemController {
 	
 	@Autowired
@@ -34,7 +36,7 @@ public class ItemController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @Transactional
-    public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
+    public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid ItemCreationRequest item) throws DataNotFoundException {
     	
     	Company company = companyRepository.findByOpenid(compid);
     	
@@ -47,11 +49,11 @@ public class ItemController {
     
     @RequestMapping(value = "/addBatch", method = RequestMethod.POST)
     @Transactional
-    public ResponseBodyWrapper addItemsToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody List<Item> items) throws DataNotFoundException {
+    public ResponseBodyWrapper addItemsToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid List<ItemCreationRequest> items) throws DataNotFoundException {
     	
     	Company company = companyRepository.findByOpenid(compid);
     	
-    	for(Item i : items) {
+    	for(ItemCreationRequest i : items) {
         	itemService.addItem(company, i);
     	}
 
@@ -118,11 +120,11 @@ public class ItemController {
     
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @Transactional
-    public ResponseBodyWrapper updateItem(@RequestAttribute("$COMPID") Long compid, @RequestBody Item item) throws DataNotFoundException {
+    public ResponseBodyWrapper updateItem(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid ItemCreationRequest item, @RequestParam Long itemid) throws DataNotFoundException {
     	
     	Company company = companyRepository.findByOpenid(compid);
     	
-    	itemService.updateItem(company, item);
+    	itemService.updateItem(company, item, itemid);
     	
     	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper();
     	

@@ -37,6 +37,7 @@ D:\AntoMirai\wms_spring\src\main\java\com\wms\DAO\ValidationRepository.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\DAO\ItemRepository.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\model\AccMailContent.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\ServerIIApplication.java
+D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\BoughtService.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\service\helper\ObjectHelper.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\web\AccountController.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\WmsService.java
@@ -68,6 +69,8 @@ D:\AntoMirai\wms_spring\src\main\java\com\wms\service\Exceptions\FieldMissingExc
 D:\AntoMirai\wms_spring\src\main\java\com\wms\service\RedisService.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\component\Component.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\auth\entity\CustomAuthenticationToken.java
+D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\PriceMenu.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\converter\RequestStatusConverter.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\model\ResponseBodyWrapper.java
+D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\DTO\ItemCreationRequest.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\service\Exceptions\RegistrationException.java

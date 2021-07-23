@@ -14,6 +14,7 @@ import com.wms.DAO.ItemRepository;
 import com.wms.bean.Company;
 import com.wms.bean.Inventory;
 import com.wms.bean.Item;
+import com.wms.bean.DTO.ItemCreationRequest;
 import com.wms.service.ItemService;
 import com.wms.service.helper.ObjectHelper;
 
@@ -31,40 +32,39 @@ public class ItemServiceImpl implements ItemService {
 	private final int SEARCH_PAGE_SIZE = 10;
 	
 	@Override
-	public void addItem(Company company, Item item) {
+	public void addItem(Company company, ItemCreationRequest item) {
 		
 		Inventory inventory = company.getInventory();
 		
-		for(String sku: item.getSKU()) {
+		for(String sku: item.getSku()) {
 			if(itemRepository.existsByBelongstoAndSku(inventory, sku))
 				throw new RuntimeException("SKU must be unique");
 		}
 
-		item.setBelongsTo(inventory);
+		Item newitem = new Item(item);
 		
-		itemRepository.save(item);
+		newitem.setBelongsTo(inventory);
 		
-		inventory.putItem(item);
+		itemRepository.save(newitem);
+		
+		inventory.putItem(newitem);
 		
 		inventoryRepository.save(inventory);
 	}
 
 	@Override
-	public void updateItem(Company company, Item item) {
+	public void updateItem(Company company, ItemCreationRequest item, Long itemid) {
 		
-		Item toUpdate = itemRepository.findOne(item.getOpenid());
+		Item toUpdate = itemRepository.findOne(itemid);
 		
-		toUpdate
-		.setName(item.getName())
-		.setSKU(item.getSKU())
-		.setUnit(item.getUnit())
-		.setHeight(item.getHeight())
-		.setLength(item.getLength())
-		.setWidth(item.getWidth())
-		.setWeight(item.getWeight())
-		.setNotes(item.getNotes())
-		.setWeight_unit(item.getWeight_unit())
-		.setSize_unit(item.getSize_unit());
+		Inventory inventory = company.getInventory();
+		
+		for(String sku: item.getSku()) {
+			if(itemRepository.existsByBelongstoAndSku(inventory, sku) && !toUpdate.getSKU().contains(sku))
+				throw new RuntimeException("SKU must be unique");
+		}
+		
+		toUpdate.Update(item);
 		
 		toUpdate.setUpdateOn();
 		

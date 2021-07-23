@@ -4,12 +4,13 @@ import org.springframework.data.domain.Page;
 
 import com.wms.bean.Company;
 import com.wms.bean.Item;
+import com.wms.bean.DTO.ItemCreationRequest;
 
 public interface ItemService {
 
-	void addItem(Company company , Item item) ;
+	void addItem(Company company , ItemCreationRequest item) ;
 	
-	void updateItem(Company company , Item item);
+	void updateItem(Company company, ItemCreationRequest item, Long itemid);
 	
 	void deleteItem(Company company , Long itemid);
 	

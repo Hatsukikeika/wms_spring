@@ -1,11 +1,10 @@
 package com.wms.service;
 
-import java.util.Map;
-
 import com.wms.bean.User;
+import com.wms.bean.DTO.UserCreationRequest;
 
 public interface AccountService {
-	void createRootAccount(Map<String, Object> signup);
+	void createRootAccount(UserCreationRequest reg);
 	
 	void createSubAccount(Long groupid, String email);
 	

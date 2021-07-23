@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wms.bean.DTO.ItemCreationRequest;
 
 
 @Entity
@@ -41,6 +42,25 @@ public class Item extends Package implements Serializable {
 	
 	public Item() {
 		super();
+	}
+	
+	public Item(ItemCreationRequest icr) {
+		super();
+		this.Update(icr);
+	}
+	
+	public void Update(ItemCreationRequest icr) {
+		this.name = icr.getName();
+		this.unit = icr.getUnit();
+		this.sku = icr.getSku();
+		this.imgurl = icr.getImgurl();
+		this.setHeight(icr.getHeight());
+		this.setLength(icr.getLength());
+		this.setWeight(icr.getWeight());
+		this.setWidth(icr.getWidth());
+		this.setWeight_unit(icr.getWeight_unit());
+		this.setSize_unit(icr.getSize_unit());
+		this.setNotes(icr.getNotes());
 	}
 
 	public List<String> getSKU() {

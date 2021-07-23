@@ -7,10 +7,12 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.wms.bean.Company;
 import com.wms.bean.HasIdentity;
+import com.wms.bean.PriceMenu;
 
 @Entity
 @Table(name="mapper_wmsfriend")
@@ -23,9 +25,14 @@ public class FriendPair extends HasIdentity implements Serializable {
 	private Company seller;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "friendpair_linker", nullable = false, referencedColumnName = "data_global_id",
+	@JoinColumn(name = "friendpair_warehouse", nullable = false, referencedColumnName = "data_global_id",
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
 	private Company warehouse;
+	
+	//@OneToOne(fetch = FetchType.LAZY, optional = true)
+	//@JoinColumn(name = "friendpair_pricemenu", nullable = false, referencedColumnName = "data_global_id",
+	//foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
+	//private PriceMenu pricemenu;
 	
 	public FriendPair() {
 		super();

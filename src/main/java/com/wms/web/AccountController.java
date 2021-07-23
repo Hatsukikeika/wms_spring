@@ -3,6 +3,7 @@ package com.wms.web;
 import java.util.Map;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wms.bean.User;
+import com.wms.bean.DTO.UserCreationRequest;
 import com.wms.model.ResponseBodyWrapper;
 import com.wms.service.AccountService;
 import com.wms.service.Exceptions.DataNotFoundException;
@@ -28,7 +30,7 @@ public class AccountController {
     // Create a new account
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     @Transactional
-    public ResponseBodyWrapper createAccount(@RequestBody Map<String, Object> reg) {
+    public ResponseBodyWrapper createAccount(@RequestBody @Valid UserCreationRequest reg) {
     	
     	accountService.createRootAccount(reg);
     	
@@ -47,9 +49,8 @@ public class AccountController {
         return responseBodyWrapper;
     }
     
-    // Create a sub account.
-    @RequestMapping(value = "/sub", method = RequestMethod.POST)
-    @Transactional
+    //@RequestMapping(value = "/sub", method = RequestMethod.POST)
+    //@Transactional
     public ResponseBodyWrapper createSubAccount(@RequestAttribute("$GROUPID") Long groupid, @RequestParam String email) {
     	
     	accountService.createSubAccount(groupid, email);
@@ -57,8 +58,8 @@ public class AccountController {
     	return new ResponseBodyWrapper();
     }
     
-    @RequestMapping(value = "/sub", method = RequestMethod.DELETE)
-    @Transactional
+    //@RequestMapping(value = "/sub", method = RequestMethod.DELETE)
+    //@Transactional
     public ResponseBodyWrapper removeSubAccount(@RequestAttribute("$GROUPID") Long groupid, @RequestParam long userid) {
     	
     	accountService.removeSubAccount(groupid, userid);
@@ -66,8 +67,8 @@ public class AccountController {
     	return new ResponseBodyWrapper();
     }
     
-    @RequestMapping(value = "/val")
-    @Transactional
+    //@RequestMapping(value = "/val")
+    //@Transactional
     public ResponseBodyWrapper validateAccount(@RequestParam long userid, @RequestParam long vid, @RequestParam String key) {
     	
     	accountService.validateAccount(userid, vid, key);;
@@ -75,8 +76,8 @@ public class AccountController {
     	return new ResponseBodyWrapper();
     }
     
-    @RequestMapping(value = "/password", method = RequestMethod.PUT)
-    @Transactional
+    //@RequestMapping(value = "/password", method = RequestMethod.PUT)
+    //@Transactional
     public ResponseBodyWrapper changePasswrod(@RequestAttribute("$GROUPID") Long groupid,
     		@RequestAttribute("$GROUPID") String email, @RequestBody Map<String,String> pass) {
     	

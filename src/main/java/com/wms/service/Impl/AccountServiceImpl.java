@@ -21,6 +21,7 @@ import com.wms.bean.Company;
 import com.wms.bean.Inventory;
 import com.wms.bean.User;
 import com.wms.bean.Validation;
+import com.wms.bean.DTO.UserCreationRequest;
 import com.wms.bean.enu.GroupType;
 import com.wms.bean.enu.UserRole;
 import com.wms.bean.relations.mtm.CompanyMember;
@@ -60,33 +61,22 @@ public class AccountServiceImpl implements AccountService {
 
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
-			.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-	// Password length must between 7-35 character.
-	private static final int MIN_PASSWORD_LENGTH = 7;
-
-	private static final int MAX_PASSWORD_LENGTH = 35;
-
-	// Email length must between 6-35 character.
-	private static final int MIN_EMAIL_LENGTH = 6;
-
-	private static final int MAX_EMAIL_LENGTH = 35;
-
 	@Override
-	public void createRootAccount(Map<String, Object> signup) {
-		String email = (String) signup.get("email");
-		String password = (String) signup.get("password");
+	public void createRootAccount(UserCreationRequest reg) {
+		
+		String email = reg.getEmail();
+		String password = reg.getPassword();
 
-		GroupType gtype = GroupType.get((Integer) signup.get("grouptype"));
-		String invcode = (String) signup.get("invite");
-
-		checkEmailAndPassword(email, password);
+		GroupType gtype = GroupType.get(reg.getGrouptype());
+		String invcode = reg.getInvcode();
+		
+		if (userRepository.existsByEmail(email))
+			throw new RegistrationException(email + " is already in use.");
 
 		if (gtype == GroupType.TYPE_SELLER || gtype == GroupType.TYPE_STORAGE) {
 			// Parameter is save
 			// create user group
-			Company company = new Company().setType(gtype).setActivated(true).setName((String) signup.get("cname"));
+			Company company = new Company().setType(gtype).setActivated(true).setName(reg.getCname());
 			Inventory inventory = new Inventory(company);
 			companyRepository.save(company);
 			inventoryRepository.save(inventory);
@@ -111,9 +101,10 @@ public class AccountServiceImpl implements AccountService {
 
 			// create root user using given group
 			User user = new User(company)
-					.setFirstname((String) signup.get("firstname"))
-					.setLastname((String) signup.get("lastname"))
-					.setActivated(false).setEmail(email)
+					.setFirstname(reg.getFirstname())
+					.setLastname(reg.getLastname())
+					.setActivated(false)
+					.setEmail(email)
 					.setPassword(bCryptPasswordEncoder.encode(password));
 
 			CompanyMember cm = new CompanyMember();
@@ -208,22 +199,6 @@ public class AccountServiceImpl implements AccountService {
 		entityManager.detach(user);
 
 		return user;
-	}
-
-	private void checkEmailAndPassword(String email, String password) {
-		// check if the email or password is missing
-		if (email == null || password == null)
-			throw new FieldMissingException("email/password");
-
-		// check if the email is duplicated
-		if (userRepository.existsByEmail(email))
-			throw new RegistrationException(email + " is already in use.");
-
-		// check if the format is correct
-		if (MIN_PASSWORD_LENGTH > password.length() || password.length() > MAX_PASSWORD_LENGTH
-				|| !VALID_EMAIL_ADDRESS_REGEX.matcher(email).find() || MIN_EMAIL_LENGTH > email.length()
-				|| email.length() > MAX_EMAIL_LENGTH)
-			throw new RegistrationException("invalid request format");
 	}
 
 	private void sendValidationEmail(String email, Long compid, String tempass, Validation val) {

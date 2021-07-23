@@ -30,7 +30,7 @@ public class ResponseBodyWrapper {
 		return this;
 	}
 	
-	public ResponseBodyWrapper setMessage(String _msg) {
+	public ResponseBodyWrapper setMessage(Object _msg) {
 		payload.replace("message", _msg);
 		return this;
 	}

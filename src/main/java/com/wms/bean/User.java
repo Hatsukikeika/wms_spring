@@ -20,7 +20,7 @@ import com.wms.bean.enu.UserRole;
 @Table(name = "wmsgroup_user")
 public class User extends HasIdentity implements Serializable  {
 
-	@Column(name="user_email", nullable = false)
+	@Column(name="user_email", nullable = false, unique=true)
 	private String email;
 
 	@Column(name="user_password", nullable = false)
