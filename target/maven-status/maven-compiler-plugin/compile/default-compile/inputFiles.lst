@@ -40,6 +40,7 @@ D:\AntoMirai\wms_spring\src\main\java\com\wms\ServerIIApplication.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\BoughtService.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\service\helper\ObjectHelper.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\web\AccountController.java
+D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\DTO\UserCreationRequest.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\WmsService.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\JunkyFlake\JunkyFlake.java
 D:\AntoMirai\wms_spring\src\main\java\com\wms\bean\Company.java

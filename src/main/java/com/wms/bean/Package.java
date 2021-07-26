@@ -38,7 +38,10 @@ public abstract class Package extends HasIdentity {
 	private String size_unit;
 	
 	@Column(name="package_notes", nullable = true)
-	private String notes;	
+	private String notes;
+	
+	@Column(name="package_notes", nullable = true)
+	private Integer count;	
 	
 	@OneToMany
 	private Map<Long, Package> package_inside;
@@ -104,6 +107,19 @@ public abstract class Package extends HasIdentity {
 	public Package setSize_unit(String size_unit) {
 		this.size_unit = size_unit;
 		return this;
+	}
+
+	public Integer getCount() {
+		return count;
+	}
+
+	public Package setCount(Integer count) {
+		this.count = count;
+		return this;
+	}
+	
+	public void putItem(Package item) {
+		package_inside.put(item.getOpenid(), item);
 	}
 	
 }

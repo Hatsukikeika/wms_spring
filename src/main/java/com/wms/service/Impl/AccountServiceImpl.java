@@ -19,8 +19,10 @@ import com.wms.DAO.UserRepository;
 import com.wms.DAO.ValidationRepository;
 import com.wms.bean.Company;
 import com.wms.bean.Inventory;
+import com.wms.bean.SellerCompany;
 import com.wms.bean.User;
 import com.wms.bean.Validation;
+import com.wms.bean.WarehouseCompany;
 import com.wms.bean.DTO.UserCreationRequest;
 import com.wms.bean.enu.GroupType;
 import com.wms.bean.enu.UserRole;
@@ -43,7 +45,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
-	
+
 	@Autowired
 	private CompMemberRepository compMemberRepository;
 
@@ -55,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Autowired
 	private FriendPairRepository friendPairRepository;
-	
+
 	@Autowired
 	private InventoryRepository inventoryRepository;
 
@@ -63,78 +65,64 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public void createRootAccount(UserCreationRequest reg) {
-		
+
 		String email = reg.getEmail();
 		String password = reg.getPassword();
 
 		GroupType gtype = GroupType.get(reg.getGrouptype());
 		String invcode = reg.getInvcode();
-		
+
 		if (userRepository.existsByEmail(email))
 			throw new RegistrationException(email + " is already in use.");
 
-		if (gtype == GroupType.TYPE_SELLER || gtype == GroupType.TYPE_STORAGE) {
-			// Parameter is save
-			// create user group
-			Company company = new Company().setType(gtype).setActivated(true).setName(reg.getCname());
+		Company company = null;
+		
+		switch (gtype) {
+		case TYPE_SELLER:
+			company = (SellerCompany) new SellerCompany().setActivated(true)
+					.setName(reg.getCname());
 			Inventory inventory = new Inventory(company);
-			companyRepository.save(company);
 			inventoryRepository.save(inventory);
+			break;
+		case TYPE_STORAGE:
+			company = (WarehouseCompany) new WarehouseCompany().setActivated(true)
+					.setName(reg.getCname());
 
-			Company linker = null;
-			if (invcode != null) {
-				linker = companyRepository.findByInvcode(invcode);
-				if (linker == null || linker.getType() == gtype)
-					throw new RegistrationException("invalid invitation code");
-				switch (linker.getType()) {
-				case TYPE_SELLER:
-					FriendPair g1 = new FriendPair(linker, company);
-					friendPairRepository.save(g1);
-					break;
-				case TYPE_STORAGE:
-					FriendPair g2 = new FriendPair(company, linker);
-					friendPairRepository.save(g2);
-					break;
-				default:
-				}
-			}
-
-			// create root user using given group
-			User user = new User(company)
-					.setFirstname(reg.getFirstname())
-					.setLastname(reg.getLastname())
-					.setActivated(false)
-					.setEmail(email)
-					.setPassword(bCryptPasswordEncoder.encode(password));
-
-			CompanyMember cm = new CompanyMember();
-			cm.setCompany(company).setMember(user);
-			
-			switch (gtype) {
-			case TYPE_SELLER:
-				user.setRole(UserRole.SELLER);
-				break;
-			case TYPE_STORAGE:
-				user.setRole(UserRole.STORAGE);
-				break;
-			default:
-			}
-
-			userRepository.save(user);
-
-			// create validation info and send the validation email.
-			Validation val = new Validation(user);
-			
-			validationRepository.save(val);
-
-			compMemberRepository.save(cm);
-			
-			//sendValidationEmail(email, company.getId(), null, val);
-
-		} else {
-			throw new RegistrationException("invalid group type");
+			break;
+		default:
+			throw new RegistrationException("Unknown Account Type.");
 		}
 
+		companyRepository.save(company);
+		
+
+		// create root user using given group
+		User user = new User(company).setFirstname(reg.getFirstname()).setLastname(reg.getLastname())
+				.setActivated(false).setEmail(email).setPassword(bCryptPasswordEncoder.encode(password));
+
+		CompanyMember cm = new CompanyMember();
+		cm.setCompany(company).setMember(user);
+
+		switch (gtype) {
+		case TYPE_SELLER:
+			user.setRole(UserRole.SELLER);
+			break;
+		case TYPE_STORAGE:
+			user.setRole(UserRole.STORAGE);
+			break;
+		default:
+		}
+
+		userRepository.save(user);
+
+		// create validation info and send the validation email.
+		Validation val = new Validation(user);
+
+		validationRepository.save(val);
+
+		compMemberRepository.save(cm);
+
+		// sendValidationEmail(email, company.getId(), null, val);
 	}
 
 	@Override
@@ -152,21 +140,21 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void validateAccount(Long userid, Long vid, String key) {
 		Validation validation = validationRepository.findOne(vid);
-		if(validation == null)
+		if (validation == null)
 			throw new DataNotFoundException(vid.toString(), "vid", "validation attempt");
 
 		User user = validation.getUser();
-		
-		if(user == null) {
+
+		if (user == null) {
 			validationRepository.delete(validation);
 			throw new RuntimeException("Mapping error");
-		}else if(validation.getExpire() < new Date().getTime()) {
+		} else if (validation.getExpire() < new Date().getTime()) {
 			validationRepository.delete(validation);
 			throw new ObjectExpiredException("validation");
-		}else if(!validation.getKey().equals(key) || !user.getOpenid().equals(userid)) {
+		} else if (!validation.getKey().equals(key) || !user.getOpenid().equals(userid)) {
 			throw new BadAuthParamException("invalid validation pair");
-		}else {
-			if(user.getRole() == UserRole.SELLER ||user.getRole() == UserRole.STORAGE)
+		} else {
+			if (user.getRole() == UserRole.SELLER || user.getRole() == UserRole.STORAGE)
 				companyRepository.save(user.getOwnedCompany().setActivated(true));
 			userRepository.save(user.setActivated(true));
 			validationRepository.delete(validation);
@@ -194,7 +182,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public User getAccountDetail(Long userid) {
-		
+
 		User user = userRepository.findOne(userid);
 		entityManager.detach(user);
 
@@ -227,6 +215,29 @@ public class AccountServiceImpl implements AccountService {
 		} catch (RegInfoNotFoundException | MessagingException e) {
 			throw new RegistrationException("Failed to send validation email: " + e.getMessage());
 		}
+	}
+
+	private void makePartnership(Company company, String invcode) {
+		if (invcode.isEmpty())
+			return;
+
+		Company invcomp = companyRepository.findByInvcode(invcode);
+
+		if (invcomp == null || invcomp.getType() == company.getType())
+			throw new RegistrationException("invalid invitation code");
+
+		FriendPair partnership = null;
+
+		switch (company.getType()) {
+		case TYPE_SELLER:
+			partnership = new FriendPair((SellerCompany) company, (WarehouseCompany) invcomp);
+			break;
+		case TYPE_STORAGE:
+			partnership = new FriendPair((SellerCompany) invcomp, (WarehouseCompany) company);
+			break;
+		}
+
+		friendPairRepository.save(partnership);
 	}
 
 }

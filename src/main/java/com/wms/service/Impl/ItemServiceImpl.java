@@ -10,10 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.wms.DAO.ItemRepository;
+import com.wms.DAO.ItemInfoRepository;
 import com.wms.bean.Company;
 import com.wms.bean.Inventory;
-import com.wms.bean.Item;
+import com.wms.bean.ItemInfo;
+import com.wms.bean.SellerCompany;
 import com.wms.bean.DTO.ItemCreationRequest;
 import com.wms.service.ItemService;
 import com.wms.service.helper.ObjectHelper;
@@ -25,27 +26,27 @@ public class ItemServiceImpl implements ItemService {
 	private InventoryRepository inventoryRepository;
 
 	@Autowired
-	private ItemRepository itemRepository;
+	private ItemInfoRepository itemInfoRepository;
 	
-	private ObjectHelper<Item> itemHelper = new ObjectHelper<>();
+	private ObjectHelper<ItemInfo> itemHelper = new ObjectHelper<>();
 	
 	private final int SEARCH_PAGE_SIZE = 10;
 	
 	@Override
-	public void addItem(Company company, ItemCreationRequest item) {
+	public void addItem(SellerCompany company, ItemCreationRequest item) {
 		
 		Inventory inventory = company.getInventory();
 		
 		for(String sku: item.getSku()) {
-			if(itemRepository.existsByBelongstoAndSku(inventory, sku))
+			if(itemInfoRepository.existsByBelongstoAndSku(inventory, sku))
 				throw new RuntimeException("SKU must be unique");
 		}
 
-		Item newitem = new Item(item);
+		ItemInfo newitem = new ItemInfo(item);
 		
 		newitem.setBelongsTo(inventory);
 		
-		itemRepository.save(newitem);
+		itemInfoRepository.save(newitem);
 		
 		inventory.putItem(newitem);
 		
@@ -53,14 +54,14 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public void updateItem(Company company, ItemCreationRequest item, Long itemid) {
+	public void updateItem(SellerCompany company, ItemCreationRequest item, Long itemid) {
 		
-		Item toUpdate = itemRepository.findOne(itemid);
+		ItemInfo toUpdate = itemInfoRepository.findOne(itemid);
 		
 		Inventory inventory = company.getInventory();
 		
 		for(String sku: item.getSku()) {
-			if(itemRepository.existsByBelongstoAndSku(inventory, sku) && !toUpdate.getSKU().contains(sku))
+			if(itemInfoRepository.existsByBelongstoAndSku(inventory, sku) && !toUpdate.getSKU().contains(sku))
 				throw new RuntimeException("SKU must be unique");
 		}
 		
@@ -68,29 +69,29 @@ public class ItemServiceImpl implements ItemService {
 		
 		toUpdate.setUpdateOn();
 		
-		itemRepository.save(toUpdate);
+		itemInfoRepository.save(toUpdate);
 
 	}
 
 	@Override
-	public void deleteItem(Company company, Long item) {
+	public void deleteItem(SellerCompany company, Long item) {
 		
-		Item i = company.getInventory().getItem(item);
+		ItemInfo i = company.getInventory().getItem(item);
 		
 		if(i == null)
 			throw new RuntimeException();
 		
 		i.setIsDel(true).setUpdateOn();
 		
-		itemRepository.save(i);
+		itemInfoRepository.save(i);
 	}
 
 	@Override
-	public void deleteItemPerma(Company company, Long item) {
+	public void deleteItemPerma(SellerCompany company, Long item) {
 		
 		Inventory inv = company.getInventory();
 		
-		Item i = inv.getItem(item);
+		ItemInfo i = inv.getItem(item);
 		
 		inv.getItems_inbag().remove(item);
 		
@@ -100,29 +101,29 @@ public class ItemServiceImpl implements ItemService {
 		if(i.getIsDel() != true)
 			throw new RuntimeException();
 		
-		itemRepository.delete(i);
+		itemInfoRepository.delete(i);
 	}
 	
 	@Override
-	public Page<Item> getItemList(Company company, int pageNum, int pageSize) {
+	public Page<ItemInfo> getItemList(SellerCompany company, int pageNum, int pageSize) {
 		
-		List<Item> itemlist = new ArrayList<Item>(company.getInventory().getItems_inbag().values());
+		List<ItemInfo> itemlist = new ArrayList<ItemInfo>(company.getInventory().getItems_inbag().values());
 		
 		return listToPageCovert(itemlist, pageNum, pageSize);
 	}
 
 	@Override
-	public Page<Item> searchUsingSku(Company company, String sku) {
+	public Page<ItemInfo> searchUsingSku(SellerCompany company, String sku) {
 		
-		List<Item> itemlist = itemRepository.findByBelongstoAndSku(company.getInventory(), sku);
+		List<ItemInfo> itemlist = itemInfoRepository.findByBelongstoAndSku(company.getInventory(), sku);
 		
 		return listToPageCovert(itemlist, 0, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<Item> searchUsingName(Company company, String name, int pageNum) {
+	public Page<ItemInfo> searchUsingName(SellerCompany company, String name, int pageNum) {
 		
-		List<Item> itemlist = itemRepository.findByBelongstoAndNameContains(company.getInventory(), name);
+		List<ItemInfo> itemlist = itemInfoRepository.findByBelongstoAndNameContains(company.getInventory(), name);
 		
 		return listToPageCovert(itemlist, pageNum, SEARCH_PAGE_SIZE);
 	}
@@ -134,7 +135,7 @@ public class ItemServiceImpl implements ItemService {
 	 * @param pageSize page size
 	 * @return Pagination of items.
 	 */
-	private Page<Item> listToPageCovert(List<Item> itemlist, int pageNum, int pageSize){
+	private Page<ItemInfo> listToPageCovert(List<ItemInfo> itemlist, int pageNum, int pageSize){
 		Pageable pagination = new PageRequest(pageNum, pageSize);
 		
         int start =  pagination.getOffset();
@@ -144,7 +145,7 @@ public class ItemServiceImpl implements ItemService {
         	throw new RuntimeException("Bad pagination request");
         }
         
-		Page<Item> page = new PageImpl<Item>(itemlist.subList(start, end), pagination, itemlist.size());
+		Page<ItemInfo> page = new PageImpl<ItemInfo>(itemlist.subList(start, end), pagination, itemlist.size());
 		
 		return page;
 	}

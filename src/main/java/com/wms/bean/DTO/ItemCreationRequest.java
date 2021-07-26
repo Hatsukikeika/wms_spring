@@ -37,6 +37,7 @@ public class ItemCreationRequest {
 	@Length(min = 0, max = 150)
 	private String notes;
 	
+	@NotNull
 	private List<String> sku;
 
 	public Double getLength() {

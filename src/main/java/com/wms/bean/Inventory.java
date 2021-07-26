@@ -26,7 +26,7 @@ public class Inventory extends HasIdentity {
 	private Integer total_approxweight;
 	
     @ElementCollection
-	private Map<Long, Item> items_inbag;
+	private Map<Long, ItemInfo> items_inbag;
     
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "inventory_company_openid", nullable = false, referencedColumnName = "data_global_id",
@@ -44,7 +44,7 @@ public class Inventory extends HasIdentity {
     	this.total_items = 0;
     }
 	
-    public void putItem(Item item) {
+    public void putItem(ItemInfo item) {
     	Long itemid = item.getOpenid();
     	
     	if(items_inbag.containsKey(itemid)) {
@@ -68,16 +68,16 @@ public class Inventory extends HasIdentity {
 		return this;
 	}
 
-	public Map<Long, Item> getItems_inbag() {
+	public Map<Long, ItemInfo> getItems_inbag() {
 		return items_inbag;
 	}
 	
-	public Item getItem(Long itemid) {
+	public ItemInfo getItem(Long itemid) {
 		
 		return items_inbag.get(itemid);
 	}
 
-	public Inventory setItems_inbag(Map<Long, Item> items_inbag) {
+	public Inventory setItems_inbag(Map<Long, ItemInfo> items_inbag) {
 		this.items_inbag = items_inbag;
 		return this;
 	}

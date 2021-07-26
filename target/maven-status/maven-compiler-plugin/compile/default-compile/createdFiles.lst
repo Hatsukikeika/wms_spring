@@ -64,6 +64,7 @@ com\wms\configuration\RedisConfig.class
 com\wms\service\RedisService.class
 com\wms\bean\converter\GroupTypeConverter.class
 com\wms\bean\Validation.class
+com\wms\bean\DTO\UserCreationRequest.class
 com\wms\service\Impl\InventoryRepository.class
 com\wms\bean\enu\ComponentType.class
 com\wms\JunkyFlake\JunkyFlake.class

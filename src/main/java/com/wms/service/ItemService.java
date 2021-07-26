@@ -2,23 +2,23 @@ package com.wms.service;
 
 import org.springframework.data.domain.Page;
 
-import com.wms.bean.Company;
-import com.wms.bean.Item;
+import com.wms.bean.ItemInfo;
+import com.wms.bean.SellerCompany;
 import com.wms.bean.DTO.ItemCreationRequest;
 
 public interface ItemService {
 
-	void addItem(Company company , ItemCreationRequest item) ;
+	void addItem(SellerCompany company , ItemCreationRequest item) ;
 	
-	void updateItem(Company company, ItemCreationRequest item, Long itemid);
+	void updateItem(SellerCompany company, ItemCreationRequest item, Long itemid);
 	
-	void deleteItem(Company company , Long itemid);
+	void deleteItem(SellerCompany company , Long itemid);
 	
-	void deleteItemPerma(Company company , Long itemid);
+	void deleteItemPerma(SellerCompany company , Long itemid);
 	
-	Page<Item> searchUsingSku(Company company , String sku);
+	Page<ItemInfo> searchUsingSku(SellerCompany company , String sku);
 	
-	Page<Item> searchUsingName(Company company , String name, int pageNum);
+	Page<ItemInfo> searchUsingName(SellerCompany company , String name, int pageNum);
 	
-	Page<Item> getItemList(Company company , int pageNum, int pageSize);
+	Page<ItemInfo> getItemList(SellerCompany company , int pageNum, int pageSize);
 }

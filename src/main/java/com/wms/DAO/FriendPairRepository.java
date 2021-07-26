@@ -14,5 +14,7 @@ public interface FriendPairRepository extends JpaRepository<FriendPair, Long> {
 	
 	Page<FriendPair> findByWarehouseOpenid(Long warehouseid, Pageable pagination);
 	
+	FriendPair findBySellerOpenidAndWarehouseOpenid(Long sellerid, Long warehouseid);
+	
 	boolean existsBySellerAndWarehouse(Company seller, Company warehouse);
 }

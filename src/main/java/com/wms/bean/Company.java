@@ -2,7 +2,11 @@ package com.wms.bean;
 
 import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -10,7 +14,9 @@ import com.wms.bean.enu.GroupType;
 
 @Entity
 @Table(name="wmscompany")
-public class Company extends HasIdentity implements Serializable {
+@Inheritance(strategy=InheritanceType.JOINED)
+@DiscriminatorColumn(name = "company_discriminator", discriminatorType = DiscriminatorType.STRING)
+public abstract class Company extends HasIdentity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -35,8 +41,6 @@ public class Company extends HasIdentity implements Serializable {
 	@OneToOne(mappedBy="ownedCompany")
 	private User owner;
 	
-	@OneToOne(mappedBy="company")
-	private Inventory inventory;
 	
 	public Company() {
 		super();
@@ -101,15 +105,6 @@ public class Company extends HasIdentity implements Serializable {
 	public GroupType getType() {
 		
 		return type;
-	}
-
-	public Inventory getInventory() {
-		return inventory;
-	}
-
-	public Company setInventory(Inventory inventory) {
-		this.inventory = inventory;
-		return this;
 	}	
 	
 }
