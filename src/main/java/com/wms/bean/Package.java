@@ -1,5 +1,7 @@
 package com.wms.bean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -40,7 +42,7 @@ public abstract class Package extends HasIdentity {
 	@Column(name="package_notes", nullable = true)
 	private String notes;
 	
-	@Column(name="package_notes", nullable = true)
+	@Column(name="package_count", nullable = true)
 	private Integer count;	
 	
 	@OneToMany
@@ -122,4 +124,11 @@ public abstract class Package extends HasIdentity {
 		package_inside.put(item.getOpenid(), item);
 	}
 	
+	public List<Package> getPackagesInside(){
+		return new ArrayList<Package>(package_inside.values());
+	}
+	
+	public Package getPackageInside(Long id) {
+		return package_inside.get(id);
+	}
 }

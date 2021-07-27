@@ -2,14 +2,13 @@ package com.wms.bean.DTO;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.wms.bean.BatchPackage;
 
 public class ForecastRequest {
 
@@ -22,6 +21,7 @@ public class ForecastRequest {
 	private String trackingNum;
 	
 	@NotEmpty(message = "Do not create empty forecast request.")
+	@Valid
 	private List<BatchItemRequest> batches;
 	
 	public Long getWarehouseId() {
@@ -83,6 +83,7 @@ public class ForecastRequest {
 		private String unit = "--";
 		
 		@NotEmpty(message = "Do not create empty forecast batch.")
+		@Valid
 		private List<simpleBatchItem> batches;
 
 		public Double getLength() {

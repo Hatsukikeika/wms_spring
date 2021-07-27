@@ -1,29 +1,37 @@
 package com.wms.bean;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.wms.bean.enu.RequestStatus;
 
+@Entity
+@Table(name="wmsforecast_instock")
 public class ForecastInstock extends HasIdentity {
 
+	@ElementCollection
+	private Map<Long, BatchPackage> batches;
+	
 	@ManyToOne
 	private SellerCompany seller;
 	
 	@ManyToOne
 	private WarehouseCompany warehouse;
 	
+	@Column
 	private String carrier;
 	
+	@Column
 	private String trackingNum;
 	
-	private List<BatchPackage> batches;
-	
-	private Boolean sellerAccepted;
-	
-	private Boolean warehouseAccepted;	
-	
+	@Column
 	private RequestStatus status;
 	
 	public ForecastInstock() {}
@@ -65,30 +73,28 @@ public class ForecastInstock extends HasIdentity {
 	}
 
 	public List<BatchPackage> getBatches() {
-		return batches;
+		return new ArrayList<>(batches.values());
 	}
 
-	public ForecastInstock setBatches(List<BatchPackage> batches) {
+	public ForecastInstock setBatches(Map<Long, BatchPackage> batches) {
 		this.batches = batches;
 		return this;
 	}
-
-	public Boolean getSellerAccepted() {
-		return sellerAccepted;
-	}
-
-	public ForecastInstock setSellerAccepted(Boolean sellerAccepted) {
-		this.sellerAccepted = sellerAccepted;
+	
+	public ForecastInstock addBatch(BatchPackage batch) {
+		this.batches.put(batch.getOpenid(), batch);
 		return this;
 	}
 
-	public Boolean getWarehouseAccepted() {
-		return warehouseAccepted;
-	}
-
-	public ForecastInstock setWarehouseAccepted(Boolean warehouseAccepted) {
-		this.warehouseAccepted = warehouseAccepted;
-		return this;
+	public Boolean canBeDone() {
+		for(BatchPackage bp : batches.values()) {
+			for(Package pac : bp.getPackagesInside()) {
+				if(!((ForecastItem)pac).getSellerAccepted())
+					return false;
+			}
+		}
+		
+		return true;
 	}
 
 	public RequestStatus getStatus() {

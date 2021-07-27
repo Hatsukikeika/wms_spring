@@ -19,6 +19,9 @@ public class Inventory extends HasIdentity {
 	
 	private final int MAX_INVENTORY_SIZE = 100;
 
+	@Column(name="inventory_name", nullable = true)	
+	private String inventory_name;
+	
 	@Column(name="inventory_itemcount")	
 	private Integer total_items;
 	
@@ -90,5 +93,15 @@ public class Inventory extends HasIdentity {
 		this.company = company;
 		return this;
 	}
+
+	public String getInventoryName() {
+		return inventory_name;
+	}
+
+	public Inventory setInventoryName(String inventory_name) {
+		this.inventory_name = inventory_name;
+		return this;
+	}
     
+	
 }

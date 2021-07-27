@@ -22,12 +22,11 @@ import com.wms.bean.DTO.ItemCreationRequest;
 @DiscriminatorValue("iteminfo")
 public class ItemInfo extends Package implements Serializable {
 	
-	@ElementCollection
-	@Column(name="companyitem_sku")
-	private List<String> sku;
-	
 	@Column(name="companyitem_iname")
 	private String name;
+	
+	@Column(name="companyitem_sku")
+	private String sku;
 	
 	@Column(name="companyitem_units", nullable=true)
 	private String unit;
@@ -52,7 +51,6 @@ public class ItemInfo extends Package implements Serializable {
 	public void Update(ItemCreationRequest icr) {
 		this.name = icr.getName();
 		this.unit = icr.getUnit();
-		this.sku = icr.getSku();
 		this.imgurl = icr.getImgurl();
 		this.setHeight(icr.getHeight());
 		this.setLength(icr.getLength());
@@ -62,32 +60,15 @@ public class ItemInfo extends Package implements Serializable {
 		this.setSize_unit(icr.getSize_unit());
 		this.setNotes(icr.getNotes());
 	}
-	
-	public ItemInfo(ItemInfo iteminfo) {
-		super();
-		this.Update(iteminfo);
-	}
-	
-	public void Update(ItemInfo iteminfo) {
-		this.name = iteminfo.getName();
-		this.unit = iteminfo.getUnit();
-		this.sku = iteminfo.getSKU();
-		this.imgurl = iteminfo.getImgurl();
-		this.setHeight(iteminfo.getHeight());
-		this.setLength(iteminfo.getLength());
-		this.setWeight(iteminfo.getWeight());
-		this.setWidth(iteminfo.getWidth());
-		this.setWeight_unit(iteminfo.getWeight_unit());
-		this.setSize_unit(iteminfo.getSize_unit());
-		this.setNotes(iteminfo.getNotes());
-	}
 
-	public List<String> getSKU() {
+	
+	
+	public String getSku() {
 		return sku;
 	}
 
-	public ItemInfo setSKU(List<String> SKU) {
-		this.sku = SKU;
+	public ItemInfo setSku(String sku) {
+		this.sku = sku;
 		return this;
 	}
 

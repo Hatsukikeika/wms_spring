@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class WarehouseCompany  extends Company {
 
 	@OneToMany(mappedBy="company")
-	@MapKey(name = "Openid")
+	@MapKey(name = "openid")
 	private Map<Long, Inventory> inventoryList;
 	
 	public Inventory getInventory(Long inventoryId) {
@@ -28,6 +28,12 @@ public class WarehouseCompany  extends Company {
 	}
 
 	public WarehouseCompany setInventory(Inventory inventory) {
+		
+		for(Inventory i : inventoryList.values()) {
+			if(i.getInventoryName().equals(inventory.getInventoryName()))
+				throw new RuntimeException("Inventory name must be unique");
+		}
+		
 		this.inventoryList.putIfAbsent(inventory.getOpenid(),inventory);
 		return this;
 	}

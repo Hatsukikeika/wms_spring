@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class ItemCreationRequest {
 
@@ -20,16 +21,16 @@ public class ItemCreationRequest {
 	@NotNull
 	private Double weight;
 	
-	@NotNull
+	@NotBlank
 	private String weight_unit;
 	
-	@NotNull
+	@NotBlank
 	private String size_unit;
 	
-	@NotNull
+	@NotBlank
 	private String unit;
 	
-	@NotNull
+	@NotBlank
 	private String name;
 	
 	private String imgurl;
@@ -37,8 +38,8 @@ public class ItemCreationRequest {
 	@Length(min = 0, max = 150)
 	private String notes;
 	
-	@NotNull
-	private List<String> sku;
+	@NotBlank
+	private String sku;
 
 	public Double getLength() {
 		return length;
@@ -112,11 +113,11 @@ public class ItemCreationRequest {
 		this.notes = notes;
 	}
 
-	public List<String> getSku() {
+	public String getSku() {
 		return sku;
 	}
 
-	public void setSku(List<String> sku) {
+	public void setSku(String sku) {
 		this.sku = sku;
 	}
 
