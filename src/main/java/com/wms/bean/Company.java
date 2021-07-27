@@ -20,10 +20,10 @@ public abstract class Company extends HasIdentity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name="comp_name")
+	@Column(name="comp_name", unique=true)
 	private String name;
 	
-	@Column(name="comp_type")
+	@Column(name="comp_type", nullable=false)
 	private GroupType type;
 	
 	@Column(name="comp_addr")
@@ -34,9 +34,6 @@ public abstract class Company extends HasIdentity implements Serializable {
 	
 	@Column(name="comp_banned")
 	private Boolean banned;
-	
-	@Column(name="comp_invcode")
-	private String invcode;
 	
 	@OneToOne(mappedBy="ownedCompany")
 	private User owner;
@@ -72,10 +69,6 @@ public abstract class Company extends HasIdentity implements Serializable {
 	public Company setBaned(Boolean baned) {
 		this.banned = baned;
 		return this;
-	}
-
-	public String getInvcode() {
-		return invcode;
 	}
 
 	public Company setType(GroupType type) {

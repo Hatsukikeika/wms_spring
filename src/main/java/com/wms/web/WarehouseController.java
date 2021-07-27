@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wms.DAO.WarehouseRepository;
+import com.wms.DAO.CompanyRepository;
 import com.wms.bean.WarehouseCompany;
 import com.wms.model.ResponseBodyWrapper;
 import com.wms.service.WarehouseService;
@@ -20,7 +20,7 @@ import com.wms.service.Exceptions.DataNotFoundException;
 public class WarehouseController {
 
 	@Autowired
-	private WarehouseRepository warehouseRepository;
+	private CompanyRepository companyRepository;
 	
 	@Autowired
 	private WarehouseService warehouseService;
@@ -29,7 +29,7 @@ public class WarehouseController {
     @Transactional
     public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam String name) throws DataNotFoundException {
     	
-    	WarehouseCompany company = warehouseRepository.findByOpenid(compid);
+    	WarehouseCompany company = (WarehouseCompany) companyRepository.findByOpenid(compid);
     	
     	warehouseService.addStorage(company, name);
     	

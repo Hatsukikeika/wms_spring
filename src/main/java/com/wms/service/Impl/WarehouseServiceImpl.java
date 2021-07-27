@@ -3,7 +3,7 @@ package com.wms.service.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wms.DAO.WarehouseRepository;
+import com.wms.DAO.CompanyRepository;
 import com.wms.bean.Inventory;
 import com.wms.bean.WarehouseCompany;
 import com.wms.service.WarehouseService;
@@ -12,7 +12,7 @@ import com.wms.service.WarehouseService;
 public class WarehouseServiceImpl implements WarehouseService {
 	
 	@Autowired
-	private WarehouseRepository warehouseRepository;
+	private CompanyRepository companyRepository;
 
 	@Override
 	public void addStorage(WarehouseCompany company, String stroageName) {
@@ -24,7 +24,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 		
 		company.setInventory(inventory);
 		
-		warehouseRepository.save(company);
+		companyRepository.save(company);
 		
 		
 	}

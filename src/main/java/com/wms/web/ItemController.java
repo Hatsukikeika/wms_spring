@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wms.DAO.CompanyRepository;
-import com.wms.DAO.SellerCompanyRepository;
 import com.wms.bean.Company;
 import com.wms.bean.ItemInfo;
 import com.wms.bean.SellerCompany;
@@ -31,7 +30,7 @@ import com.wms.service.Exceptions.IllegalActionException;
 public class ItemController {
 	
 	@Autowired
-	private SellerCompanyRepository sellerCompanyRepository;
+	private CompanyRepository companyRepository;
 	
 	@Autowired
 	private ItemService itemService;
@@ -40,7 +39,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid ItemCreationRequest item) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	itemService.addItem(company, item);
     	
@@ -53,7 +52,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper addItemsToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid List<ItemCreationRequest> items) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	for(ItemCreationRequest i : items) {
         	itemService.addItem(company, i);
@@ -69,7 +68,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper getItemsInInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "10") int pageSize) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	ResponseBodyWrapper responseBodyWrapper = new ResponseBodyWrapper().putData(itemService.getItemList(company, pageNum, pageSize));
     	
@@ -81,7 +80,7 @@ public class ItemController {
     public ResponseBodyWrapper searchItemsInInventory(@RequestAttribute("$COMPID") Long compid, @RequestParam(defaultValue = "0") int pageNum, @RequestParam(defaultValue = "sku") String by,
     		@RequestParam String keyword) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	switch(by) {
     	case "sku":
@@ -98,7 +97,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper removeItem(@RequestAttribute("$COMPID") Long compid, @RequestParam Long item) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	itemService.deleteItem(company, item);
     	
@@ -111,7 +110,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper removeItemPerma(@RequestAttribute("$COMPID") Long compid, @RequestParam Long item) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	itemService.deleteItemPerma(company, item);
     	
@@ -124,7 +123,7 @@ public class ItemController {
     @Transactional
     public ResponseBodyWrapper updateItem(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid ItemCreationRequest item, @RequestParam Long itemid) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	itemService.updateItem(company, item, itemid);
     	

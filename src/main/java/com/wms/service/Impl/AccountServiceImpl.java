@@ -74,27 +74,28 @@ public class AccountServiceImpl implements AccountService {
 
 		if (userRepository.existsByEmail(email))
 			throw new RegistrationException(email + " is already in use.");
-
-		Company company = null;
 		
 		switch (gtype) {
 		case TYPE_SELLER:
-			company = (SellerCompany) new SellerCompany().setActivated(true)
-					.setName(reg.getCname());
-			Inventory inventory = new Inventory(company);
+			companyRepository.saveAndFlush(new SellerCompany().setActivated(true)
+					.setName(reg.getCname()));
+			
+			//Delete this section after completing the validation part
+			Inventory inventory = new Inventory().setCompany(companyRepository.findByName(reg.getCname()));
 			inventoryRepository.save(inventory);
+			
 			break;
 		case TYPE_STORAGE:
-			company = (WarehouseCompany) new WarehouseCompany().setActivated(true)
-					.setName(reg.getCname());
-
+			companyRepository.saveAndFlush(new WarehouseCompany().setActivated(true)
+					.setName(reg.getCname()));
 			break;
 		default:
 			throw new RegistrationException("Unknown Account Type.");
 		}
-
-		companyRepository.save(company);
 		
+		Company company = companyRepository.findByName(reg.getCname());
+		
+		makePartnership(company, invcode);
 
 		// create root user using given group
 		User user = new User(company).setFirstname(reg.getFirstname()).setLastname(reg.getLastname())
@@ -195,7 +196,7 @@ public class AccountServiceImpl implements AccountService {
 			String add = "";
 			String subject = "Activate your account";
 
-			Company company = companyRepository.findOne(compid);
+			Company company = (Company) companyRepository.findOne(compid);
 
 			if (tempass != null) {
 				add = "<br/> Temporary password is: " + tempass;
@@ -218,10 +219,10 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	private void makePartnership(Company company, String invcode) {
-		if (invcode.isEmpty())
+		if (invcode == null || invcode.isEmpty())
 			return;
 
-		Company invcomp = companyRepository.findByInvcode(invcode);
+		Company invcomp = companyRepository.findByName(invcode);
 
 		if (invcomp == null || invcomp.getType() == company.getType())
 			throw new RegistrationException("invalid invitation code");

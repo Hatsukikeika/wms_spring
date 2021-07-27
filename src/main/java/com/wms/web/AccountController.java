@@ -33,7 +33,7 @@ public class AccountController {
     public ResponseBodyWrapper createAccount(@RequestBody @Valid UserCreationRequest reg) {
     	
     	accountService.createRootAccount(reg);
-    	
+		
     	return new ResponseBodyWrapper();
     }
     

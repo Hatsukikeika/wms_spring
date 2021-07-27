@@ -4,21 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.wms.bean.enu.GroupType;
+
 @Entity
 @Table(name = "wmsseller")
 @DiscriminatorValue("warehouse")
 public class WarehouseCompany  extends Company {
 
-	@OneToMany(mappedBy="company")
+	@OneToMany(mappedBy="company", cascade = CascadeType.ALL)
 	@MapKey(name = "openid")
 	private Map<Long, Inventory> inventoryList;
 	
+	public WarehouseCompany() {
+		super();
+		this.setType(GroupType.TYPE_STORAGE);
+	}
+
 	public Inventory getInventory(Long inventoryId) {
 		return inventoryList.get(inventoryId);
 	}

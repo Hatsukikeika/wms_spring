@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wms.DAO.SellerCompanyRepository;
+import com.wms.DAO.CompanyRepository;
 import com.wms.bean.SellerCompany;
 import com.wms.bean.DTO.ForecastRequest;
 import com.wms.model.ResponseBodyWrapper;
@@ -22,7 +22,7 @@ import com.wms.service.Exceptions.DataNotFoundException;
 public class SWActionController {
 
 	@Autowired
-	private SellerCompanyRepository sellerCompanyRepository;
+	private CompanyRepository companyRepository;
 	
 	@Autowired
 	private SWService sWService;
@@ -32,7 +32,7 @@ public class SWActionController {
     @Transactional
     public ResponseBodyWrapper addItemToInventory(@RequestAttribute("$COMPID") Long compid, @RequestBody @Valid ForecastRequest forecastRequest) throws DataNotFoundException {
     	
-    	SellerCompany company = sellerCompanyRepository.findByOpenid(compid);
+    	SellerCompany company = (SellerCompany) companyRepository.findByOpenid(compid);
     	
     	sWService.forecastReg(company, forecastRequest);
     	
