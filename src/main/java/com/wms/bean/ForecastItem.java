@@ -40,6 +40,10 @@ public class ForecastItem extends Package {
 	@Column(name="forecastitem_onReturn", nullable=true)
 	private Boolean onReturn;
 	
+	public ForecastItem() {
+		super();
+	}
+	
 	public ForecastItem(ItemInfo iteminfo) {
 		super();
 		this.Update(iteminfo);

@@ -54,6 +54,8 @@ public class SWServiceImpl implements SWService {
 				.setWidth(br.getWidth())
 				.setWeight_unit(br.getWeight_unit())
 				.setSize_unit(br.getSize_unit());
+			
+			
 			for(BatchItemRequest.simpleBatchItem sbi : br.getBatches()) {
 				ItemInfo lookup = itemInfoRepository.findOne(sbi.getItemId());
 				ForecastItem forecastItem = new ForecastItem(lookup);

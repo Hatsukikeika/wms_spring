@@ -1,6 +1,7 @@
 package com.wms.bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,10 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.InheritanceType;
 import javax.persistence.DiscriminatorType;
+import javax.persistence.ElementCollection;
 
 @Entity
 @Table(name = "wmspackage")
@@ -21,22 +21,22 @@ import javax.persistence.DiscriminatorType;
 public abstract class Package extends HasIdentity {
 	
 	
-	@Column(name="package_length", nullable = false)
+	@Column(name="package_length", nullable = true)
 	private Double length;
 	
-	@Column(name="package_height", nullable = false)
+	@Column(name="package_height", nullable = true)
 	private Double height;
 	
-	@Column(name="package_width", nullable = false)
+	@Column(name="package_width", nullable = true)
 	private Double width;
 	
-	@Column(name="package_weight", nullable = false)
+	@Column(name="package_weight", nullable = true)
 	private Double weight;
 	
-	@Column(name="package_wunit", nullable = false)
+	@Column(name="package_wunit", nullable = true)
 	private String weight_unit;
 	
-	@Column(name="package_sunit", nullable = false)
+	@Column(name="package_sunit", nullable = true)
 	private String size_unit;
 	
 	@Column(name="package_notes", nullable = true)
@@ -45,8 +45,13 @@ public abstract class Package extends HasIdentity {
 	@Column(name="package_count", nullable = true)
 	private Integer count;	
 	
-	@OneToMany
+	@ElementCollection
 	private Map<Long, Package> package_inside;
+
+	public Package() {
+		super();
+		this.package_inside = new HashMap<>();
+	}
 
 	public Double getLength() {
 		return length;

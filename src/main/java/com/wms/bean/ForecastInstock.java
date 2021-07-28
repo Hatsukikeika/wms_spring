@@ -1,6 +1,7 @@
 package com.wms.bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,9 @@ public class ForecastInstock extends HasIdentity {
 	@Column
 	private RequestStatus status;
 	
-	public ForecastInstock() {}
+	public ForecastInstock() {
+		this.batches = new HashMap<>();
+	}
 
 	public SellerCompany getSeller() {
 		return seller;
