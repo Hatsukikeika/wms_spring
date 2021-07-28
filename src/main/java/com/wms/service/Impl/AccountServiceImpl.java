@@ -222,7 +222,7 @@ public class AccountServiceImpl implements AccountService {
 		if (invcode == null || invcode.isEmpty())
 			return;
 
-		Company invcomp = companyRepository.findByName(invcode);
+		Company invcomp = companyRepository.findByOwnerEmail(invcode);
 
 		if (invcomp == null || invcomp.getType() == company.getType())
 			throw new RegistrationException("invalid invitation code");
