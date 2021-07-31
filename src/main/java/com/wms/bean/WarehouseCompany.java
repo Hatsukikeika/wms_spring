@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -18,8 +19,8 @@ import com.wms.bean.enu.GroupType;
 @DiscriminatorValue("warehouse")
 public class WarehouseCompany  extends Company {
 
-	@OneToMany(mappedBy="company", cascade = CascadeType.ALL)
-	@MapKey(name = "openid")
+	@ElementCollection
+	@MapKey(name="openid")
 	private Map<Long, Inventory> inventoryList;
 	
 	public WarehouseCompany() {

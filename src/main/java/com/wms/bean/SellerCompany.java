@@ -15,7 +15,7 @@ import com.wms.bean.enu.GroupType;
 @DiscriminatorValue("seller")
 public class SellerCompany extends Company implements Serializable {
 
-	@OneToOne(mappedBy="company", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy="company")
 	private Inventory inventory;	
 	
 	public SellerCompany() {

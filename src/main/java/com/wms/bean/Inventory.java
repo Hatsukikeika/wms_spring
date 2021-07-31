@@ -9,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,7 +30,7 @@ public class Inventory extends HasIdentity {
     @ElementCollection
 	private Map<Long, ItemInfo> items_inbag;
     
-	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "inventory_company_openid", nullable = false, referencedColumnName = "data_global_id",
 			foreignKey = @ForeignKey(name="none",value = ConstraintMode.NO_CONSTRAINT))
     private Company company;
