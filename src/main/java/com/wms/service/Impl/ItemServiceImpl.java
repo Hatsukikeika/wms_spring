@@ -28,8 +28,6 @@ public class ItemServiceImpl implements ItemService {
 	@Autowired
 	private ItemInfoRepository itemInfoRepository;
 
-	private ObjectHelper<ItemInfo> itemHelper = new ObjectHelper<>();
-
 	private final int SEARCH_PAGE_SIZE = 10;
 
 	@Override
@@ -107,7 +105,7 @@ public class ItemServiceImpl implements ItemService {
 
 		List<ItemInfo> itemlist = new ArrayList<ItemInfo>(company.getInventory().getItems_inbag().values());
 
-		return listToPageCovert(itemlist, pageNum, pageSize);
+		return ObjectHelper.listToPageCovert(itemlist, pageNum, pageSize);
 	}
 
 	@Override
@@ -115,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
 
 		List<ItemInfo> itemlist = itemInfoRepository.findByBelongstoAndSku(company.getInventory(), sku);
 
-		return listToPageCovert(itemlist, 0, SEARCH_PAGE_SIZE);
+		return ObjectHelper.listToPageCovert(itemlist, 0, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
@@ -123,31 +121,8 @@ public class ItemServiceImpl implements ItemService {
 
 		List<ItemInfo> itemlist = itemInfoRepository.findByBelongstoAndNameContains(company.getInventory(), name);
 
-		return listToPageCovert(itemlist, pageNum, SEARCH_PAGE_SIZE);
+		return ObjectHelper.listToPageCovert(itemlist, pageNum, SEARCH_PAGE_SIZE);
 	}
 
-	/**
-	 * A method that paginating the List<Item> to Page<Item>
-	 * 
-	 * @param itemlist the input itemlist
-	 * @param pageNum  page number
-	 * @param pageSize page size
-	 * @return Pagination of items.
-	 */
-	private Page<ItemInfo> listToPageCovert(List<ItemInfo> itemlist, int pageNum, int pageSize) {
-		Pageable pagination = new PageRequest(pageNum, pageSize);
-
-		int start = pagination.getOffset();
-		int end = (start + pagination.getPageSize()) > itemlist.size() ? itemlist.size()
-				: (start + pagination.getPageSize());
-
-		if (start > end) {
-			throw new RuntimeException("Bad pagination request");
-		}
-
-		Page<ItemInfo> page = new PageImpl<ItemInfo>(itemlist.subList(start, end), pagination, itemlist.size());
-
-		return page;
-	}
 
 }

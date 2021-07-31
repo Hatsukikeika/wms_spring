@@ -1,12 +1,11 @@
 package com.wms.bean;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.wms.bean.enu.RequestStatus;
 
 @Entity
 @Table(name = "wmsfcitem")
@@ -37,8 +36,14 @@ public class ForecastItem extends Package {
 	@Column(name="forecastitem_sellerAccepted", nullable=true)
 	private Boolean sellerAccepted;
 	
+	@Column(name="forecastitem_warehouseAccepted", nullable=true)
+	private Boolean warehouseAccepted;
+	
 	@Column(name="forecastitem_onReturn", nullable=true)
 	private Boolean onReturn;
+	
+	@Column(name="forecastitem_onReturn", nullable=false)
+	private RequestStatus itemStatus;
 	
 	public ForecastItem(ItemInfo iteminfo) {
 		super();

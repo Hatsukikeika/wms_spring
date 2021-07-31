@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "wmsitem")
+@Table(name = "wmsisitem")
 @DiscriminatorValue("iteminstock")
 public class InstockItem extends Package {
 

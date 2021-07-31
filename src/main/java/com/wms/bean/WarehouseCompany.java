@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import com.wms.bean.enu.GroupType;
 
 @Entity
-@Table(name = "wmsseller")
+@Table(name = "wmswarehouse")
 @DiscriminatorValue("warehouse")
 public class WarehouseCompany  extends Company {
 

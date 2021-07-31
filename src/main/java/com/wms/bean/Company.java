@@ -14,7 +14,7 @@ import com.wms.bean.enu.GroupType;
 
 @Entity
 @Table(name="wmscompany")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "company_discriminator", discriminatorType = DiscriminatorType.STRING)
 public abstract class Company extends HasIdentity implements Serializable {
 

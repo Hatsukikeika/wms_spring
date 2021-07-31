@@ -1,6 +1,9 @@
 package com.wms.service.Impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.wms.DAO.BatchPackageRepository;
@@ -13,11 +16,13 @@ import com.wms.bean.ForecastInstock;
 import com.wms.bean.ForecastItem;
 import com.wms.bean.ItemInfo;
 import com.wms.bean.SellerCompany;
+import com.wms.bean.WarehouseCompany;
 import com.wms.bean.DTO.ForecastRequest;
 import com.wms.bean.DTO.ForecastRequest.BatchItemRequest;
 import com.wms.bean.enu.RequestStatus;
 import com.wms.bean.relations.mtm.FriendPair;
 import com.wms.service.SWService;
+import com.wms.service.helper.ObjectHelper;
 
 @Service
 public class SWServiceImpl implements SWService {
@@ -37,6 +42,8 @@ public class SWServiceImpl implements SWService {
 	@Autowired
 	private BatchPackageRepository batchPackageRepository;
 
+	private final int SEARCH_PAGE_SIZE = 10;	
+	
 	@Override
 	public void forecastReg(SellerCompany company, ForecastRequest forecastRequest) {
 
@@ -75,6 +82,42 @@ public class SWServiceImpl implements SWService {
 		forecastInstockRepository.save(forcast);
 		
 		
+	}
+
+	@Override
+	public Page<ForecastInstock> getAllForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenid(company, forcastID);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public Page<ForecastInstock> getAllForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenid(company, forcastID);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public Page<ForecastInstock> getUndoneForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenidAndStatus(company, forcastID, RequestStatus.PENDING);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public Page<ForecastInstock> getUndoneForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenidAndStatus(company, forcastID, RequestStatus.PENDING);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public Page<ForecastInstock> getFinishedForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenidAndStatus(company, forcastID, RequestStatus.ACHIEVED);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public Page<ForecastInstock> getFinishedForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenidAndStatus(company, forcastID, RequestStatus.ACHIEVED);
+		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 }

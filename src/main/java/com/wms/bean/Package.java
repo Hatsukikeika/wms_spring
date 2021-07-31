@@ -16,7 +16,7 @@ import javax.persistence.DiscriminatorType;
 
 @Entity
 @Table(name = "wmspackage")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "package_discriminator", discriminatorType = DiscriminatorType.STRING)
 public abstract class Package extends HasIdentity {
 	

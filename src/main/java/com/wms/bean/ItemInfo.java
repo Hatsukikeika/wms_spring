@@ -52,6 +52,7 @@ public class ItemInfo extends Package implements Serializable {
 		this.name = icr.getName();
 		this.unit = icr.getUnit();
 		this.imgurl = icr.getImgurl();
+		this.sku = icr.getSku();
 		this.setHeight(icr.getHeight());
 		this.setLength(icr.getLength());
 		this.setWeight(icr.getWeight());

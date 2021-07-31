@@ -1,8 +1,6 @@
 package com.wms.service.Impl;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -32,7 +30,6 @@ import com.wms.model.AccMailContent;
 import com.wms.service.AccountService;
 import com.wms.service.Exceptions.BadAuthParamException;
 import com.wms.service.Exceptions.DataNotFoundException;
-import com.wms.service.Exceptions.FieldMissingException;
 import com.wms.service.Exceptions.ObjectExpiredException;
 import com.wms.service.Exceptions.RegistrationException;
 import com.wms.utils.mailing.exceptions.RegInfoNotFoundException;
