@@ -42,7 +42,7 @@ public class ForecastItem extends Package {
 	@Column(name="forecastitem_onReturn", nullable=true)
 	private Boolean onReturn;
 	
-	@Column(name="forecastitem_onReturn", nullable=false)
+	@Column(name="forecastitem_status", nullable=false)
 	private RequestStatus itemStatus;
 	
 	public ForecastItem(ItemInfo iteminfo) {
