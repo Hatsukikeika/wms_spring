@@ -56,7 +56,7 @@ public class ForecastRequest {
 		this.batches = batches;
 	}
 
-	public class BatchItemRequest{
+	public static class BatchItemRequest{
 		
 		@NotNull
 		@Min(0)
@@ -85,6 +85,23 @@ public class ForecastRequest {
 		@NotEmpty(message = "Do not create empty forecast batch.")
 		@Valid
 		private List<simpleBatchItem> batches;
+				
+		public BatchItemRequest() {
+			super();
+		}
+
+		public BatchItemRequest(Double length, Double width, Double height, Double weight, String weight_unit,
+				String size_unit, String unit, List<simpleBatchItem> batches) {
+			super();
+			this.length = length;
+			this.width = width;
+			this.height = height;
+			this.weight = weight;
+			this.weight_unit = weight_unit;
+			this.size_unit = size_unit;
+			this.unit = unit;
+			this.batches = batches;
+		}
 
 		public Double getLength() {
 			return length;
@@ -150,7 +167,7 @@ public class ForecastRequest {
 			this.batches = batches;
 		}
 
-		public class simpleBatchItem{
+		public static class simpleBatchItem{
 			@NotNull
 			private Long itemId;
 			
@@ -158,6 +175,16 @@ public class ForecastRequest {
 			@Min(0)
 			@Max(999999)
 			private Integer count;
+			
+			public simpleBatchItem() {
+				super();
+			}
+
+			public simpleBatchItem(Long itemId, Integer count) {
+				super();
+				this.itemId = itemId;
+				this.count = count;
+			}
 
 			public Long getItemId() {
 				return itemId;
