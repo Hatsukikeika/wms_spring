@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wms.bean.enu.RequestStatus;
 
 @Entity
@@ -18,6 +19,7 @@ import com.wms.bean.enu.RequestStatus;
 public class ForecastInstock extends HasIdentity {
 
 	@ElementCollection
+	@JsonIgnore
 	private Map<Long, BatchPackage> batches;
 	
 	@ManyToOne
@@ -75,6 +77,7 @@ public class ForecastInstock extends HasIdentity {
 		return this;
 	}
 
+	@JsonIgnore
 	public List<BatchPackage> getBatches() {
 		return new ArrayList<>(batches.values());
 	}

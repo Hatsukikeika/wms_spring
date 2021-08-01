@@ -11,12 +11,16 @@ import com.wms.bean.enu.RequestStatus;
 
 public interface ForecastInstockRepository extends JpaRepository<ForecastInstock, Long> {
 
+	List<ForecastInstock> findBySeller(SellerCompany sc);
+	
+	List<ForecastInstock> findByWarehouse(WarehouseCompany wc);
+	
 	List<ForecastInstock> findBySellerAndOpenid(SellerCompany sc, Long id);
 	
 	List<ForecastInstock> findByWarehouseAndOpenid(WarehouseCompany wc, Long id);
 	
-	List<ForecastInstock> findBySellerAndOpenidAndStatus(SellerCompany sc, Long id, RequestStatus rs);
+	List<ForecastInstock> findBySellerAndStatus(SellerCompany sc, RequestStatus rs);
 	
-	List<ForecastInstock> findByWarehouseAndOpenidAndStatus(WarehouseCompany wc, Long id, RequestStatus rs);
+	List<ForecastInstock> findByWarehouseAndStatus(WarehouseCompany wc, RequestStatus rs);
 	
 }

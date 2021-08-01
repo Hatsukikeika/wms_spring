@@ -87,38 +87,38 @@ public class SWServiceImpl implements SWService {
 	}
 
 	@Override
-	public Page<ForecastInstock> getAllForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenid(company, forcastID);
+	public Page<ForecastInstock> getAllForcastInstock(SellerCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySeller(company);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<ForecastInstock> getAllForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenid(company, forcastID);
+	public Page<ForecastInstock> getAllForcastInstock(WarehouseCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouse(company);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<ForecastInstock> getUndoneForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenidAndStatus(company, forcastID, RequestStatus.PENDING);
+	public Page<ForecastInstock> getUndoneForcastInstock(SellerCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndStatus(company, RequestStatus.PENDING);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<ForecastInstock> getUndoneForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenidAndStatus(company, forcastID, RequestStatus.PENDING);
+	public Page<ForecastInstock> getUndoneForcastInstock(WarehouseCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndStatus(company, RequestStatus.PENDING);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<ForecastInstock> getFinishedForcastInstock(SellerCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndOpenidAndStatus(company, forcastID, RequestStatus.ACHIEVED);
+	public Page<ForecastInstock> getFinishedForcastInstock(SellerCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findBySellerAndStatus(company, RequestStatus.ACHIEVED);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
 	@Override
-	public Page<ForecastInstock> getFinishedForcastInstock(WarehouseCompany company, Long forcastID, Integer Page) {
-		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndOpenidAndStatus(company, forcastID, RequestStatus.ACHIEVED);
+	public Page<ForecastInstock> getFinishedForcastInstock(WarehouseCompany company, Integer Page) {
+		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndStatus(company, RequestStatus.ACHIEVED);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
 	}
 
