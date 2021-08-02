@@ -44,10 +44,16 @@ public class ForecastItem extends Package {
 	
 	@Column(name="forecastitem_status", nullable=false)
 	private RequestStatus itemStatus;
+
+	public ForecastItem() {
+		super();
+		this.itemStatus = RequestStatus.PENDING;
+	}
 	
 	public ForecastItem(ItemInfo iteminfo) {
 		super();
 		this.Update(iteminfo);
+		this.itemStatus = RequestStatus.PENDING;
 	}
 	
 	public void Update(ItemInfo iteminfo) {
