@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wms.DAO.CompanyRepository;
+import com.wms.DAO.ForecastInstockRepository;
+import com.wms.bean.ForecastInstock;
 import com.wms.bean.SellerCompany;
 import com.wms.bean.WarehouseCompany;
+import com.wms.bean.DTO.ForecastCheckIn;
 import com.wms.bean.DTO.ForecastRequest;
 import com.wms.bean.enu.GroupType;
 import com.wms.model.ResponseBodyWrapper;
@@ -26,6 +29,9 @@ public class SWActionController {
 
 	@Autowired
 	private CompanyRepository companyRepository;
+	
+	@Autowired
+	private ForecastInstockRepository forecastInstockRepository;
 	
 	@Autowired
 	private SWService sWService;
@@ -61,7 +67,48 @@ public class SWActionController {
 		default:
 			return responseBodyWrapper.setStatus(400).setMessage("Not supported company type");
     	}
-
     }
 	
+    @RequestMapping(value = "/checkIn", method = RequestMethod.POST)
+    @Transactional
+    public ResponseBodyWrapper checkInForecastRequest(@RequestAttribute("$COMPID") Long compid, 
+    		@RequestParam Long forecastId,
+    		@RequestParam Long batchId,
+    		@RequestParam Long itemId,
+    		@RequestBody @Valid ForecastCheckIn checkIn) throws DataNotFoundException {
+
+    	ForecastInstock forecastInstock = forecastInstockRepository.findOne(forecastId);
+    	
+    	sWService.forecastCheckIn(forecastInstock, batchId, itemId, checkIn);
+    	
+    	return new ResponseBodyWrapper();
+    }
+    
+    @RequestMapping(value = "/confirm", method = RequestMethod.PUT)
+    @Transactional
+    public ResponseBodyWrapper confirmForecastRequest(@RequestAttribute("$COMPID") Long compid, 
+    		@RequestParam Long forecastId,
+    		@RequestParam Long batchId,
+    		@RequestParam Long itemId,
+    		@RequestParam boolean isAccepted) throws DataNotFoundException {
+
+    	ForecastInstock forecastInstock = forecastInstockRepository.findOne(forecastId);
+    	
+    	sWService.forecastConfirm(forecastInstock, batchId, itemId, isAccepted);
+    	
+    	return new ResponseBodyWrapper();
+    }
+    
+    
+    @RequestMapping(value = "/achieve", method = RequestMethod.PUT)
+    @Transactional
+    public ResponseBodyWrapper achieveForecastRequest(@RequestAttribute("$COMPID") Long compid, 
+    		@RequestParam Long forecastId) throws DataNotFoundException {
+
+    	ForecastInstock forecastInstock = forecastInstockRepository.findOne(forecastId);
+    	
+    	sWService.forecastAchieve(forecastInstock);
+    	
+    	return new ResponseBodyWrapper();
+    } 
 }

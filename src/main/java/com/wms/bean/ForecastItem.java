@@ -5,6 +5,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.wms.bean.DTO.ForecastCheckIn;
 import com.wms.bean.enu.RequestStatus;
 
 @Entity
@@ -32,6 +33,9 @@ public class ForecastItem extends Package {
 	
 	@Column(name="forecastitem_ci_width", nullable=true)
 	private Double ci_width;
+	
+	@Column(name="forecastitem_ci_count", nullable=true)
+	private Integer ci_count;
 	
 	@Column(name="forecastitem_sellerAccepted", nullable=true)
 	private Boolean sellerAccepted;
@@ -149,6 +153,61 @@ public class ForecastItem extends Package {
 		this.onReturn = onReturn;
 		return this;
 	}
+
+	public Integer getCi_count() {
+		return ci_count;
+	}
+
+	public ForecastItem setCi_count(Integer ci_count) {
+		this.ci_count = ci_count;
+		return this;
+	}
+
+	public Boolean getWarehouseAccepted() {
+		return warehouseAccepted;
+	}
+
+	public ForecastItem setWarehouseAccepted(Boolean warehouseAccepted) {
+		this.warehouseAccepted = warehouseAccepted;
+		return this;
+	}
+
+	public RequestStatus getItemStatus() {
+		return itemStatus;
+	}
+
+	public ForecastItem setItemStatus(RequestStatus itemStatus) {
+		this.itemStatus = itemStatus;
+		return this;
+	}
+
+	public void warehouseCheckIn(ForecastCheckIn checkIn) {
+		this.ci_height = checkIn.getCi_height();
+		this.ci_length = checkIn.getCi_length();
+		this.ci_weight = checkIn.getCi_weight();
+		this.ci_width = checkIn.getCi_height();
+		this.ci_count = checkIn.getCi_count();
+		
+		this.warehouseAccepted = true;
+	}
 	
 	
+	public boolean anyMismatch() {
+		if(super.getHeight() != this.ci_height)
+			return true;
+		
+		if(super.getLength() != this.ci_length)
+			return true;
+		
+		if(super.getWidth() != this.ci_width)
+			return true;
+		
+		if(super.getWeight() != this.ci_weight)
+			return true;
+		
+		if(super.getCount() != this.ci_count)
+			return true;
+		
+		return false;
+	}
 }

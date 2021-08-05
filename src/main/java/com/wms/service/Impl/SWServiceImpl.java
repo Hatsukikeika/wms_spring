@@ -6,17 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import com.wms.DAO.BatchPackageRepository;
 import com.wms.DAO.ForecastInstockRepository;
 import com.wms.DAO.ForecastItemRepository;
 import com.wms.DAO.FriendPairRepository;
-import com.wms.DAO.ItemInfoRepository;
+import com.wms.DAO.PackageRepository;
 import com.wms.bean.BatchPackage;
 import com.wms.bean.ForecastInstock;
 import com.wms.bean.ForecastItem;
+import com.wms.bean.InstockItem;
+import com.wms.bean.Inventory;
 import com.wms.bean.ItemInfo;
+import com.wms.bean.Package;
 import com.wms.bean.SellerCompany;
 import com.wms.bean.WarehouseCompany;
+import com.wms.bean.DTO.ForecastCheckIn;
 import com.wms.bean.DTO.ForecastRequest;
 import com.wms.bean.DTO.ForecastRequest.BatchItemRequest;
 import com.wms.bean.enu.RequestStatus;
@@ -34,13 +37,13 @@ public class SWServiceImpl implements SWService {
 	private ForecastInstockRepository forecastInstockRepository;
 	
 	@Autowired
-	private ItemInfoRepository itemInfoRepository;
-	
-	@Autowired
 	private ForecastItemRepository forecastItemRepository;
 	
 	@Autowired
-	private BatchPackageRepository batchPackageRepository;
+	private PackageRepository packageRepository;
+	
+	@Autowired
+	private InventoryRepository inventoryRepository;
 
 	private final int SEARCH_PAGE_SIZE = 10;	
 	
@@ -64,14 +67,14 @@ public class SWServiceImpl implements SWService {
 			
 			
 			for(BatchItemRequest.simpleBatchItem sbi : br.getBatches()) {
-				ItemInfo lookup = itemInfoRepository.findOne(sbi.getItemId());
+				ItemInfo lookup = (ItemInfo) packageRepository.findOne(sbi.getItemId());
 				ForecastItem forecastItem = new ForecastItem(lookup);
 				forecastItem.setCount(sbi.getCount());
 				forecastItemRepository.save(forecastItem);
 				batch.putItem(forecastItem);
 			}
 			
-			batchPackageRepository.save(batch);
+			packageRepository.save(batch);
 			forcast.addBatch(batch);			
 		}
 		
@@ -120,6 +123,67 @@ public class SWServiceImpl implements SWService {
 	public Page<ForecastInstock> getFinishedForcastInstock(WarehouseCompany company, Integer Page) {
 		List<ForecastInstock> list = forecastInstockRepository.findByWarehouseAndStatus(company, RequestStatus.ACHIEVED);
 		return ObjectHelper.listToPageCovert(list, Page, SEARCH_PAGE_SIZE);
+	}
+
+	@Override
+	public void forecastCheckIn(ForecastInstock forecast, Long batchId, Long itemId, ForecastCheckIn checkIn) {
+		ForecastItem fitem = (ForecastItem)forecast.lookupBatch(batchId).getPackageInside(itemId);
+
+		fitem.warehouseCheckIn(checkIn);
+		
+		fitem.setWarehouseAccepted(true);
+		
+		if(fitem.anyMismatch())
+			fitem.setSellerAccepted(false);
+		else
+			fitem.setSellerAccepted(true);
+		
+		packageRepository.save(fitem);
+		
+	}
+
+	@Override
+	public void forecastConfirm(ForecastInstock forecast, Long batchId, Long itemId, boolean isAccpeted) {
+		ForecastItem fitem = (ForecastItem)forecast.lookupBatch(batchId).getPackageInside(itemId);
+		
+		if(isAccpeted) {
+			fitem.setSellerAccepted(true);
+		} 
+		
+		if (!fitem.getSellerAccepted()) {
+			fitem.setWarehouseAccepted(false);
+		}
+		
+		packageRepository.save(fitem);
+	}
+
+	@Override
+	public void forecastAchieve(ForecastInstock forecast) {
+		
+		WarehouseCompany warehouse = forecast.getWarehouse();
+		
+		Inventory storage = warehouse.getInventory(forecast.getStorageId());
+		
+		for(BatchPackage bp: forecast.getBatches()) {
+			for(Package fi : bp.getPackagesInside()) {
+				
+				ForecastItem forecastItem = (ForecastItem)fi;
+				
+				if(forecastItem.anyMismatch())
+					throw new RuntimeException();
+				
+				InstockItem instockItem = (InstockItem) new InstockItem()
+						.setCount(forecastItem.getCi_count())
+						.setHeight(forecastItem.getCi_height())
+						.setLength(forecastItem.getCi_length())
+						.setWidth(forecastItem.getCi_width())
+						.setWeight(forecastItem.getCi_weight());
+				
+				packageRepository.save(instockItem);
+			}
+		}
+		
+		inventoryRepository.save(storage);
 	}
 
 }

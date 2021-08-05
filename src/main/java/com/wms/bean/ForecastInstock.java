@@ -35,6 +35,9 @@ public class ForecastInstock extends HasIdentity {
 	private String trackingNum;
 	
 	@Column
+	private Long storageId;
+	
+	@Column
 	private RequestStatus status;
 	
 	public ForecastInstock() {
@@ -75,6 +78,19 @@ public class ForecastInstock extends HasIdentity {
 	public ForecastInstock setTrackingNum(String trackingNum) {
 		this.trackingNum = trackingNum;
 		return this;
+	}
+	
+	public Long getStorageId() {
+		return storageId;
+	}
+
+	public ForecastInstock setStorageId(Long storageId) {
+		this.storageId = storageId;
+		return this;
+	}
+
+	public BatchPackage lookupBatch(Long batchId) {
+		return this.batches.get(batchId);
 	}
 
 	@JsonIgnore

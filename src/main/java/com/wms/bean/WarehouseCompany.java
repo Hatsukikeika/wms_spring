@@ -50,5 +50,5 @@ public class WarehouseCompany  extends Company {
 	public List<Inventory> getOwnedInventory(){
 		return new ArrayList<Inventory>(inventoryList.values());
 	}
-	
+
 }

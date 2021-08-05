@@ -15,6 +15,9 @@ public class ForecastRequest {
 	@NotNull
 	private Long warehouseId;
 	
+	@NotNull
+	private Long storageId;
+	
 	@NotBlank
 	private String carrier;
 	
